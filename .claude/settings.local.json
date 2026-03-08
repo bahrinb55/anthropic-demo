@@ -23,7 +23,16 @@
       "mcp__github__list_pull_requests",
       "mcp__github__merge_pull_request",
       "Bash(.venv/Scripts/pip install:*)",
-      "Bash(.venv/Scripts/python:*)"
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(python3:*)",
+      "Bash(python3.exe:*)",
+      "Read(//d/mywork/Projet/AnthropicDemo/DemoGit/anthropic-demo/$TEMP/**)",
+      "Read(//d/mywork/Projet/AnthropicDemo/DemoGit/anthropic-demo/$TMP/**)",
+      "mcp__github__get_pull_request",
+      "mcp__github__get_file_contents",
+      "mcp__github__update_pull_request_branch",
+      "mcp__github__get_pull_request_files",
+      "mcp__github__update_issue"
     ]
   }
 }
