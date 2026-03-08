@@ -253,10 +253,8 @@
 </footer>
 
 <script>
-// ── Raw data from FRED ───────────────────────────────────────────────────────
 const RAW = [{"date":"2005-01-01","cpi":2.84487,"unrate":5.3},{"date":"2005-02-01","cpi":3.05303,"unrate":5.4},{"date":"2005-03-01","cpi":3.20684,"unrate":5.2},{"date":"2005-04-01","cpi":3.36179,"unrate":5.2},{"date":"2005-05-01","cpi":2.86929,"unrate":5.1},{"date":"2005-06-01","cpi":2.54103,"unrate":5.0},{"date":"2005-07-01","cpi":3.06716,"unrate":5.0},{"date":"2005-08-01","cpi":3.64693,"unrate":4.9},{"date":"2005-09-01","cpi":4.74183,"unrate":5.0},{"date":"2005-10-01","cpi":4.3501,"unrate":5.0},{"date":"2005-11-01","cpi":3.33855,"unrate":5.0},{"date":"2005-12-01","cpi":3.33855,"unrate":4.9},{"date":"2006-01-01","cpi":4.01879,"unrate":4.7},{"date":"2006-02-01","cpi":3.63825,"unrate":4.8},{"date":"2006-03-01","cpi":3.41792,"unrate":4.7},{"date":"2006-04-01","cpi":3.61384,"unrate":4.7},{"date":"2006-05-01","cpi":3.97727,"unrate":4.6},{"date":"2006-06-01","cpi":4.18172,"unrate":4.6},{"date":"2006-07-01","cpi":4.10467,"unrate":4.7},{"date":"2006-08-01","cpi":3.92657,"unrate":4.7},{"date":"2006-09-01","cpi":2.01207,"unrate":4.5},{"date":"2006-10-01","cpi":1.40633,"unrate":4.4},{"date":"2006-11-01","cpi":1.9687,"unrate":4.5},{"date":"2006-12-01","cpi":2.52398,"unrate":4.4},{"date":"2007-01-01","cpi":2.07577,"unrate":4.6},{"date":"2007-02-01","cpi":2.42026,"unrate":4.5},{"date":"2007-03-01","cpi":2.7982,"unrate":4.4},{"date":"2007-04-01","cpi":2.59292,"unrate":4.5},{"date":"2007-05-01","cpi":2.70989,"unrate":4.4},{"date":"2007-06-01","cpi":2.69277,"unrate":4.6},{"date":"2007-07-01","cpi":2.31789,"unrate":4.7},{"date":"2007-08-01","cpi":1.89745,"unrate":4.6},{"date":"2007-09-01","cpi":2.83383,"unrate":4.7},{"date":"2007-10-01","cpi":3.6107,"unrate":4.7},{"date":"2007-11-01","cpi":4.37327,"unrate":4.7},{"date":"2007-12-01","cpi":4.10881,"unrate":5.0},{"date":"2008-01-01","cpi":4.2947,"unrate":5.0},{"date":"2008-02-01","cpi":4.14296,"unrate":4.9},{"date":"2008-03-01","cpi":3.9749,"unrate":5.1},{"date":"2008-04-01","cpi":3.90376,"unrate":5.0},{"date":"2008-05-01","cpi":4.08841,"unrate":5.4},{"date":"2008-06-01","cpi":4.93597,"unrate":5.6},{"date":"2008-07-01","cpi":5.49751,"unrate":5.8},{"date":"2008-08-01","cpi":5.30802,"unrate":6.1},{"date":"2008-09-01","cpi":4.95332,"unrate":6.1},{"date":"2008-10-01","cpi":3.73106,"unrate":6.5},{"date":"2008-11-01","cpi":1.09992,"unrate":6.8},{"date":"2008-12-01","cpi":-0.02223,"unrate":7.3},{"date":"2009-01-01","cpi":-0.11359,"unrate":7.8},{"date":"2009-02-01","cpi":0.00846,"unrate":8.3},{"date":"2009-03-01","cpi":-0.44648,"unrate":8.7},{"date":"2009-04-01","cpi":-0.57632,"unrate":9.0},{"date":"2009-05-01","cpi":-1.01576,"unrate":9.4},{"date":"2009-06-01","cpi":-1.22917,"unrate":9.5},{"date":"2009-07-01","cpi":-1.95876,"unrate":9.5},{"date":"2009-08-01","cpi":-1.48384,"unrate":9.6},{"date":"2009-09-01","cpi":-1.37794,"unrate":9.8},{"date":"2009-10-01","cpi":-0.22397,"unrate":10.0},{"date":"2009-11-01","cpi":1.91459,"unrate":9.9},{"date":"2009-12-01","cpi":2.81412,"unrate":9.9},{"date":"2010-01-01","cpi":2.62111,"unrate":9.8},{"date":"2010-02-01","cpi":2.15134,"unrate":9.8},{"date":"2010-03-01","cpi":2.28617,"unrate":9.9},{"date":"2010-04-01","cpi":2.20677,"unrate":9.9},{"date":"2010-05-01","cpi":2.00355,"unrate":9.6},{"date":"2010-06-01","cpi":1.12156,"unrate":9.4},{"date":"2010-07-01","cpi":1.34078,"unrate":9.4},{"date":"2010-08-01","cpi":1.15018,"unrate":9.5},{"date":"2010-09-01","cpi":1.11831,"unrate":9.5},{"date":"2010-10-01","cpi":1.1667,"unrate":9.4},{"date":"2010-11-01","cpi":1.08454,"unrate":9.8},{"date":"2010-12-01","cpi":1.43779,"unrate":9.3},{"date":"2011-01-01","cpi":1.70078,"unrate":9.1},{"date":"2011-02-01","cpi":2.1249,"unrate":9.0},{"date":"2011-03-01","cpi":2.61924,"unrate":9.0},{"date":"2011-04-01","cpi":3.07723,"unrate":9.1},{"date":"2011-05-01","cpi":3.45897,"unrate":9.0},{"date":"2011-06-01","cpi":3.50232,"unrate":9.1},{"date":"2011-07-01","cpi":3.57988,"unrate":9.0},{"date":"2011-08-01","cpi":3.755,"unrate":9.0},{"date":"2011-09-01","cpi":3.81262,"unrate":9.0},{"date":"2011-10-01","cpi":3.52227,"unrate":8.8},{"date":"2011-11-01","cpi":3.45143,"unrate":8.6},{"date":"2011-12-01","cpi":3.06207,"unrate":8.5},{"date":"2012-01-01","cpi":3.00877,"unrate":8.3},{"date":"2012-02-01","cpi":2.89818,"unrate":8.3},{"date":"2012-03-01","cpi":2.58288,"unrate":8.2},{"date":"2012-04-01","cpi":2.27316,"unrate":8.2},{"date":"2012-05-01","cpi":1.73794,"unrate":8.2},{"date":"2012-06-01","cpi":1.65387,"unrate":8.2},{"date":"2012-07-01","cpi":1.41751,"unrate":8.2},{"date":"2012-08-01","cpi":1.68593,"unrate":8.1},{"date":"2012-09-01","cpi":1.94972,"unrate":7.8},{"date":"2012-10-01","cpi":2.15568,"unrate":7.8},{"date":"2012-11-01","cpi":1.79602,"unrate":7.7},{"date":"2012-12-01","cpi":1.7595,"unrate":7.9},{"date":"2013-01-01","cpi":1.68406,"unrate":8.0},{"date":"2013-02-01","cpi":2.01814,"unrate":7.7},{"date":"2013-03-01","cpi":1.51875,"unrate":7.5},{"date":"2013-04-01","cpi":1.13881,"unrate":7.6},{"date":"2013-05-01","cpi":1.39039,"unrate":7.5},{"date":"2013-06-01","cpi":1.71579,"unrate":7.5},{"date":"2013-07-01","cpi":1.88547,"unrate":7.3},{"date":"2013-08-01","cpi":1.53881,"unrate":7.2},{"date":"2013-09-01","cpi":1.09473,"unrate":7.2},{"date":"2013-10-01","cpi":0.8768,"unrate":7.2},{"date":"2013-11-01","cpi":1.23287,"unrate":6.9},{"date":"2013-12-01","cpi":1.51284,"unrate":6.7},{"date":"2014-01-01","cpi":1.55776,"unrate":6.6},{"date":"2014-02-01","cpi":1.12047,"unrate":6.7},{"date":"2014-03-01","cpi":1.61269,"unrate":6.7},{"date":"2014-04-01","cpi":2.01513,"unrate":6.2},{"date":"2014-05-01","cpi":2.16695,"unrate":6.3},{"date":"2014-06-01","cpi":2.05898,"unrate":6.1},{"date":"2014-07-01","cpi":1.97424,"unrate":6.2},{"date":"2014-08-01","cpi":1.7151,"unrate":6.1},{"date":"2014-09-01","cpi":1.68405,"unrate":5.9},{"date":"2014-10-01","cpi":1.60954,"unrate":5.7},{"date":"2014-11-01","cpi":1.23152,"unrate":5.8},{"date":"2014-12-01","cpi":0.65312,"unrate":5.6},{"date":"2015-01-01","cpi":-0.22993,"unrate":5.7},{"date":"2015-02-01","cpi":-0.08703,"unrate":5.5},{"date":"2015-03-01","cpi":-0.02203,"unrate":5.4},{"date":"2015-04-01","cpi":-0.10403,"unrate":5.4},{"date":"2015-05-01","cpi":0.03503,"unrate":5.6},{"date":"2015-06-01","cpi":0.17957,"unrate":5.3},{"date":"2015-07-01","cpi":0.22569,"unrate":5.2},{"date":"2015-08-01","cpi":0.2413,"unrate":5.1},{"date":"2015-09-01","cpi":0.00884,"unrate":5.0},{"date":"2015-10-01","cpi":0.12762,"unrate":5.0},{"date":"2015-11-01","cpi":0.43632,"unrate":5.1},{"date":"2015-12-01","cpi":0.63872,"unrate":5.0},{"date":"2016-01-01","cpi":1.2375,"unrate":4.8},{"date":"2016-02-01","cpi":0.84728,"unrate":4.9},{"date":"2016-03-01","cpi":0.89162,"unrate":5.0},{"date":"2016-04-01","cpi":1.17263,"unrate":5.1},{"date":"2016-05-01","cpi":1.07848,"unrate":4.8},{"date":"2016-06-01","cpi":1.07929,"unrate":4.9},{"date":"2016-07-01","cpi":0.86836,"unrate":4.8},{"date":"2016-08-01","cpi":1.05532,"unrate":4.9},{"date":"2016-09-01","cpi":1.54864,"unrate":5.0},{"date":"2016-10-01","cpi":1.68592,"unrate":4.9},{"date":"2016-11-01","cpi":1.68433,"unrate":4.7},{"date":"2016-12-01","cpi":2.0508,"unrate":4.7},{"date":"2017-01-01","cpi":2.51039,"unrate":4.7},{"date":"2017-02-01","cpi":2.81036,"unrate":4.6},{"date":"2017-03-01","cpi":2.4412,"unrate":4.4},{"date":"2017-04-01","cpi":2.17622,"unrate":4.4},{"date":"2017-05-01","cpi":1.85634,"unrate":4.4},{"date":"2017-06-01","cpi":1.64057,"unrate":4.3},{"date":"2017-07-01","cpi":1.72511,"unrate":4.3},{"date":"2017-08-01","cpi":1.92812,"unrate":4.4},{"date":"2017-09-01","cpi":2.18057,"unrate":4.3},{"date":"2017-10-01","cpi":2.02076,"unrate":4.2},{"date":"2017-11-01","cpi":2.17249,"unrate":4.2},{"date":"2017-12-01","cpi":2.12993,"unrate":4.1},{"date":"2018-01-01","cpi":2.15132,"unrate":4.0},{"date":"2018-02-01","cpi":2.26347,"unrate":4.1},{"date":"2018-03-01","cpi":2.33095,"unrate":4.0},{"date":"2018-04-01","cpi":2.471,"unrate":4.0},{"date":"2018-05-01","cpi":2.78192,"unrate":3.8},{"date":"2018-06-01","cpi":2.80755,"unrate":4.0},{"date":"2018-07-01","cpi":2.85412,"unrate":3.8},{"date":"2018-08-01","cpi":2.64292,"unrate":3.8},{"date":"2018-09-01","cpi":2.33206,"unrate":3.7},{"date":"2018-10-01","cpi":2.49203,"unrate":3.8},{"date":"2018-11-01","cpi":2.14733,"unrate":3.8},{"date":"2018-12-01","cpi":2.00238,"unrate":3.9},{"date":"2019-01-01","cpi":1.48759,"unrate":4.0},{"date":"2019-02-01","cpi":1.51886,"unrate":3.8},{"date":"2019-03-01","cpi":1.88319,"unrate":3.8},{"date":"2019-04-01","cpi":2.00058,"unrate":3.7},{"date":"2019-05-01","cpi":1.79591,"unrate":3.6},{"date":"2019-06-01","cpi":1.67119,"unrate":3.6},{"date":"2019-07-01","cpi":1.82633,"unrate":3.7},{"date":"2019-08-01","cpi":1.73764,"unrate":3.6},{"date":"2019-09-01","cpi":1.6845,"unrate":3.5},{"date":"2019-10-01","cpi":1.73397,"unrate":3.6},{"date":"2019-11-01","cpi":2.09229,"unrate":3.6},{"date":"2019-12-01","cpi":2.31953,"unrate":3.6},{"date":"2020-01-01","cpi":2.59977,"unrate":3.6},{"date":"2020-02-01","cpi":2.34132,"unrate":3.5},{"date":"2020-03-01","cpi":1.49404,"unrate":4.4},{"date":"2020-04-01","cpi":0.31305,"unrate":14.8},{"date":"2020-05-01","cpi":0.1982,"unrate":13.2},{"date":"2020-06-01","cpi":0.71666,"unrate":11.0},{"date":"2020-07-01","cpi":0.99686,"unrate":10.2},{"date":"2020-08-01","cpi":1.28107,"unrate":8.4},{"date":"2020-09-01","cpi":1.39102,"unrate":7.8},{"date":"2020-10-01","cpi":1.23039,"unrate":6.9},{"date":"2020-11-01","cpi":1.17575,"unrate":6.7},{"date":"2020-12-01","cpi":1.32042,"unrate":6.7},{"date":"2021-01-01","cpi":1.37384,"unrate":6.4},{"date":"2021-02-01","cpi":1.66982,"unrate":6.2},{"date":"2021-03-01","cpi":2.66782,"unrate":6.1},{"date":"2021-04-01","cpi":4.13308,"unrate":6.1},{"date":"2021-05-01","cpi":4.91826,"unrate":5.8},{"date":"2021-06-01","cpi":5.29563,"unrate":5.9},{"date":"2021-07-01","cpi":5.24517,"unrate":5.4},{"date":"2021-08-01","cpi":5.15202,"unrate":5.1},{"date":"2021-09-01","cpi":5.35122,"unrate":4.7},{"date":"2021-10-01","cpi":6.23504,"unrate":4.5},{"date":"2021-11-01","cpi":6.90197,"unrate":4.1},{"date":"2021-12-01","cpi":7.17434,"unrate":3.9},{"date":"2022-01-01","cpi":7.55881,"unrate":4.0},{"date":"2022-02-01","cpi":7.93728,"unrate":3.9},{"date":"2022-03-01","cpi":8.5722,"unrate":3.7},{"date":"2022-04-01","cpi":8.23175,"unrate":3.7},{"date":"2022-05-01","cpi":8.53817,"unrate":3.6},{"date":"2022-06-01","cpi":8.97936,"unrate":3.6},{"date":"2022-07-01","cpi":8.46258,"unrate":3.5},{"date":"2022-08-01","cpi":8.22258,"unrate":3.6},{"date":"2022-09-01","cpi":8.19211,"unrate":3.5},{"date":"2022-10-01","cpi":7.75881,"unrate":3.6},{"date":"2022-11-01","cpi":7.12286,"unrate":3.6},{"date":"2022-12-01","cpi":6.4046,"unrate":3.5},{"date":"2023-01-01","cpi":6.32718,"unrate":3.5},{"date":"2023-02-01","cpi":5.95782,"unrate":3.6},{"date":"2023-03-01","cpi":4.91772,"unrate":3.5},{"date":"2023-04-01","cpi":4.95008,"unrate":3.4},{"date":"2023-05-01","cpi":4.13185,"unrate":3.6},{"date":"2023-06-01","cpi":3.07062,"unrate":3.6},{"date":"2023-07-01","cpi":3.28775,"unrate":3.5},{"date":"2023-08-01","cpi":3.7225,"unrate":3.7},{"date":"2023-09-01","cpi":3.68721,"unrate":3.7},{"date":"2023-10-01","cpi":3.25127,"unrate":3.9},{"date":"2023-11-01","cpi":3.13335,"unrate":3.7},{"date":"2023-12-01","cpi":3.31591,"unrate":3.8},{"date":"2024-01-01","cpi":3.08834,"unrate":3.7},{"date":"2024-02-01","cpi":3.15707,"unrate":3.9},{"date":"2024-03-01","cpi":3.48683,"unrate":3.9},{"date":"2024-04-01","cpi":3.3608,"unrate":3.9},{"date":"2024-05-01","cpi":3.24428,"unrate":3.9},{"date":"2024-06-01","cpi":2.97026,"unrate":4.1},{"date":"2024-07-01","cpi":2.94148,"unrate":4.2},{"date":"2024-08-01","cpi":2.60714,"unrate":4.2},{"date":"2024-09-01","cpi":2.42648,"unrate":4.1},{"date":"2024-10-01","cpi":2.57884,"unrate":4.1},{"date":"2024-11-01","cpi":2.71947,"unrate":4.2},{"date":"2024-12-01","cpi":2.87069,"unrate":4.1},{"date":"2025-01-01","cpi":2.99098,"unrate":4.0},{"date":"2025-02-01","cpi":2.80158,"unrate":4.2},{"date":"2025-03-01","cpi":2.38198,"unrate":4.2},{"date":"2025-04-01","cpi":2.32539,"unrate":4.2},{"date":"2025-05-01","cpi":2.37727,"unrate":4.3},{"date":"2025-06-01","cpi":2.68045,"unrate":4.1},{"date":"2025-07-01","cpi":2.74262,"unrate":4.3},{"date":"2025-08-01","cpi":2.93859,"unrate":4.3},{"date":"2025-09-01","cpi":3.02257,"unrate":4.4},{"date":"2025-11-01","cpi":2.69644,"unrate":4.5},{"date":"2025-12-01","cpi":2.6533,"unrate":4.4}];
 
-// ── Statistics helpers ───────────────────────────────────────────────────────
 const mean = arr => arr.reduce((s,v)=>s+v,0)/arr.length;
 
 function pearson(xs, ys) {
@@ -280,20 +278,17 @@ function linReg(xs, ys) {
   return {b0, b1};
 }
 
-// ── Sub-period definitions ───────────────────────────────────────────────────
 const PERIODS = [
-  { label:'Full Period (2005–2025)',    start:'2005-01-01', end:'2025-12-31', color:'#60a5fa' },
-  { label:'Pre-GFC (2005–2007)',        start:'2005-01-01', end:'2007-12-31', color:'#34d399' },
-  { label:'GFC & Recovery (2008–2012)',  start:'2008-01-01', end:'2012-12-31', color:'#f87171' },
-  { label:'Low-inflation Era (2013–2019)',start:'2013-01-01', end:'2019-12-31', color:'#a78bfa' },
-  { label:'COVID Shock (2020–2021)',     start:'2020-01-01', end:'2021-12-31', color:'#fb923c' },
-  { label:'Inflation Surge (2022–2023)', start:'2022-01-01', end:'2023-12-31', color:'#f472b6' },
-  { label:'Soft Landing (2024–2025)',   start:'2024-01-01', end:'2025-12-31', color:'#4ade80' },
+  { label:'Full Period (2005-2025)',    start:'2005-01-01', end:'2025-12-31', color:'#60a5fa' },
+  { label:'Pre-GFC (2005-2007)',        start:'2005-01-01', end:'2007-12-31', color:'#34d399' },
+  { label:'GFC & Recovery (2008-2012)', start:'2008-01-01', end:'2012-12-31', color:'#f87171' },
+  { label:'Low-inflation Era (2013-2019)',start:'2013-01-01', end:'2019-12-31', color:'#a78bfa' },
+  { label:'COVID Shock (2020-2021)',     start:'2020-01-01', end:'2021-12-31', color:'#fb923c' },
+  { label:'Inflation Surge (2022-2023)', start:'2022-01-01', end:'2023-12-31', color:'#f472b6' },
+  { label:'Soft Landing (2024-2025)',   start:'2024-01-01', end:'2025-12-31', color:'#4ade80' },
 ];
 
-function filter(start,end){
-  return RAW.filter(d=>d.date>=start && d.date<=end);
-}
+function filter(start,end){ return RAW.filter(d=>d.date>=start && d.date<=end); }
 
 function stats(rows){
   const cpi=rows.map(r=>r.cpi), u=rows.map(r=>r.unrate);
@@ -301,54 +296,39 @@ function stats(rows){
   return {n:rows.length, avgCpi:mean(cpi), avgU:mean(u), r, r2:r*r, b0, b1};
 }
 
-// ── Build stat cards ─────────────────────────────────────────────────────────
 const allStats = stats(RAW);
 const preCovid = stats(filter('2005-01-01','2019-12-31'));
 const postCovid= stats(filter('2020-01-01','2025-12-31'));
 
 function card(label,value,sub,cls){
-  return `<div class="card"><div class="card-label">${label}</div>
-    <div class="card-value ${cls}">${value}</div>
-    <div class="card-sub">${sub}</div></div>`;
+  return `<div class="card"><div class="card-label">${label}</div><div class="card-value ${cls}">${value}</div><div class="card-sub">${sub}</div></div>`;
 }
 
 document.getElementById('statsGrid').innerHTML = [
-  card('Data Points', RAW.length, 'Jan 2005 – Dec 2025', 'blue'),
-  card('Full-Period r', allStats.r.toFixed(3), 'Pearson (UNRATE → CPI)', allStats.r<0?'green':'red'),
-  card('Pre-COVID r', preCovid.r.toFixed(3), '2005–2019 (181 months)', preCovid.r<0?'green':'red'),
-  card('COVID-Era r', postCovid.r.toFixed(3), '2020–2025 (70 months)', postCovid.r<0?'green':'orange'),
+  card('Data Points', RAW.length, 'Jan 2005 - Dec 2025', 'blue'),
+  card('Full-Period r', allStats.r.toFixed(3), 'Pearson (UNRATE to CPI)', allStats.r<0?'green':'red'),
+  card('Pre-COVID r', preCovid.r.toFixed(3), '2005-2019 (181 months)', preCovid.r<0?'green':'red'),
+  card('COVID-Era r', postCovid.r.toFixed(3), '2020-2025 (70 months)', postCovid.r<0?'green':'orange'),
   card('Peak CPI', '9.0%', 'Jun 2022 (supply shock)', 'red'),
   card('Peak UNRATE', '14.8%', 'Apr 2020 (COVID lockdown)', 'orange'),
 ].join('');
 
-// ── Verdict banner ────────────────────────────────────────────────────────────
 const absR = Math.abs(allStats.r);
 const verdict = document.getElementById('verdictBanner');
 verdict.className = 'verdict ' + (absR < 0.4 ? 'weak' : 'moderate');
-verdict.innerHTML = `<strong>Phillips Curve Verdict:</strong>
-  Full-period Pearson <em>r = ${allStats.r.toFixed(3)}</em> (R² = ${allStats.r2.toFixed(3)}) —
-  <strong>${absR < 0.15 ? 'Very weak / no' : absR < 0.4 ? 'Weak' : 'Moderate'} relationship</strong>
-  over the full 20-year sample.
-  Pre-COVID subperiod gives <em>r = ${preCovid.r.toFixed(3)}</em>
-  (${preCovid.r < -0.35 ? 'moderate negative — consistent with Phillips' : preCovid.r < 0 ? 'weak negative' : 'positive — contradicts Phillips'}),
-  while the COVID era flips to <em>r = ${postCovid.r.toFixed(3)}</em>,
-  reflecting supply-driven inflation coexisting with falling unemployment.`;
+verdict.innerHTML = `<strong>Phillips Curve Verdict:</strong> Full-period Pearson <em>r = ${allStats.r.toFixed(3)}</em> (R2 = ${allStats.r2.toFixed(3)}) - <strong>${absR < 0.15 ? 'Very weak / no' : absR < 0.4 ? 'Weak' : 'Moderate'} relationship</strong> over the full 20-year sample. Pre-COVID subperiod gives <em>r = ${preCovid.r.toFixed(3)}</em> (${preCovid.r < -0.35 ? 'moderate negative - consistent with Phillips' : preCovid.r < 0 ? 'weak negative' : 'positive - contradicts Phillips'}), while the COVID era flips to <em>r = ${postCovid.r.toFixed(3)}</em>, reflecting supply-driven inflation coexisting with falling unemployment.`;
 
-// ── Chart.js default overrides ────────────────────────────────────────────────
 Chart.defaults.color = '#94a3b8';
 Chart.defaults.borderColor = '#1e293b';
 
-// ── Time series chart ─────────────────────────────────────────────────────────
 const labels = RAW.map(d=>d.date.slice(0,7));
 new Chart(document.getElementById('tsChart'), {
   type:'line',
   data:{
     labels,
     datasets:[
-      { label:'CPI Inflation YoY (%)', data:RAW.map(d=>d.cpi),
-        borderColor:'#f87171', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'yCpi' },
-      { label:'Unemployment Rate (%)', data:RAW.map(d=>d.unrate),
-        borderColor:'#60a5fa', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'yU' },
+      { label:'CPI Inflation YoY (%)', data:RAW.map(d=>d.cpi), borderColor:'#f87171', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'yCpi' },
+      { label:'Unemployment Rate (%)', data:RAW.map(d=>d.unrate), borderColor:'#60a5fa', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'yU' },
     ]
   },
   options:{
@@ -356,129 +336,60 @@ new Chart(document.getElementById('tsChart'), {
     plugins:{ legend:{labels:{color:'#cbd5e1'}} },
     scales:{
       x:{ticks:{maxTicksLimit:20,color:'#64748b'}, grid:{color:'#1e293b'}},
-      yCpi:{position:'left',  title:{display:true,text:'CPI YoY %',color:'#f87171'}, ticks:{color:'#64748b'}, grid:{color:'#334155'}},
-      yU:  {position:'right', title:{display:true,text:'Unemployment %',color:'#60a5fa'}, ticks:{color:'#64748b'}, grid:{display:false}},
+      yCpi:{position:'left', title:{display:true,text:'CPI YoY %',color:'#f87171'}, ticks:{color:'#64748b'}, grid:{color:'#334155'}},
+      yU:  {position:'right',title:{display:true,text:'Unemployment %',color:'#60a5fa'}, ticks:{color:'#64748b'}, grid:{display:false}},
     }
   }
 });
 
-// ── Scatter helpers ───────────────────────────────────────────────────────────
 function scatterDataset(rows, color, label){
-  return {
-    label, data: rows.map(r=>({x:r.unrate, y:r.cpi})),
-    backgroundColor: color+'99', borderColor: color, borderWidth:1,
-    pointRadius:4, pointHoverRadius:6,
-  };
+  return { label, data: rows.map(r=>({x:r.unrate, y:r.cpi})), backgroundColor: color+'99', borderColor: color, borderWidth:1, pointRadius:4, pointHoverRadius:6 };
 }
 
 function regressionDataset(rows, color){
   const {b0,b1}=linReg(rows.map(r=>r.unrate), rows.map(r=>r.cpi));
   const xs=[Math.min(...rows.map(r=>r.unrate)), Math.max(...rows.map(r=>r.unrate))];
-  return {
-    label:`Regression (β₁=${b1.toFixed(2)})`,
-    data: xs.map(x=>({x,y:b0+b1*x})),
-    type:'line', borderColor:color, borderWidth:2,
-    borderDash:[6,3], pointRadius:0, fill:false,
-  };
+  return { label:`Regression (b1=${b1.toFixed(2)})`, data: xs.map(x=>({x,y:b0+b1*x})), type:'line', borderColor:color, borderWidth:2, borderDash:[6,3], pointRadius:0, fill:false };
 }
 
-const scatterOpts = (title) => ({
+const scatterOpts = () => ({
   responsive:true,
-  plugins:{
-    legend:{labels:{color:'#cbd5e1', boxWidth:12}},
-    tooltip:{callbacks:{label:ctx=>`UNRATE ${ctx.raw.x}%, CPI ${ctx.raw.y.toFixed(2)}%`}},
-  },
+  plugins:{ legend:{labels:{color:'#cbd5e1', boxWidth:12}}, tooltip:{callbacks:{label:ctx=>`UNRATE ${ctx.raw.x}%, CPI ${ctx.raw.y.toFixed(2)}%`}} },
   scales:{
     x:{title:{display:true,text:'Unemployment Rate (%)',color:'#94a3b8'}, ticks:{color:'#64748b'}, grid:{color:'#334155'}},
     y:{title:{display:true,text:'CPI YoY (%)',color:'#94a3b8'}, ticks:{color:'#64748b'}, grid:{color:'#334155'}},
   }
 });
 
-// Full scatter
-const periodColors=['#60a5fa','#34d399','#f87171','#a78bfa','#fb923c','#f472b6','#4ade80'];
-new Chart(document.getElementById('scatterAll'),{
-  type:'scatter',
-  data:{datasets:[
-    scatterDataset(RAW,'#60a5fa','All months'),
-    regressionDataset(RAW,'#fbbf24'),
-  ]},
-  options: scatterOpts('Full Period'),
-});
+new Chart(document.getElementById('scatterAll'),{ type:'scatter', data:{datasets:[scatterDataset(RAW,'#60a5fa','All months'), regressionDataset(RAW,'#fbbf24')]}, options: scatterOpts() });
 
-// Pre-COVID scatter
 const pre = filter('2005-01-01','2019-12-31');
-new Chart(document.getElementById('scatterPre'),{
-  type:'scatter',
-  data:{datasets:[
-    scatterDataset(pre,'#34d399','2005–2019'),
-    regressionDataset(pre,'#fbbf24'),
-  ]},
-  options: scatterOpts('Pre-COVID'),
-});
+new Chart(document.getElementById('scatterPre'),{ type:'scatter', data:{datasets:[scatterDataset(pre,'#34d399','2005-2019'), regressionDataset(pre,'#fbbf24')]}, options: scatterOpts() });
 
-// Post-COVID scatter
 const post = filter('2020-01-01','2025-12-31');
-new Chart(document.getElementById('scatterPost'),{
-  type:'scatter',
-  data:{datasets:[
-    scatterDataset(post,'#fb923c','2020–2025'),
-    regressionDataset(post,'#fbbf24'),
-  ]},
-  options: scatterOpts('COVID & Post-COVID'),
-});
+new Chart(document.getElementById('scatterPost'),{ type:'scatter', data:{datasets:[scatterDataset(post,'#fb923c','2020-2025'), regressionDataset(post,'#fbbf24')]}, options: scatterOpts() });
 
-// ── Correlation bar by period ─────────────────────────────────────────────────
-const periodStats = PERIODS.map(p=>{
-  const rows=filter(p.start,p.end);
-  return {label:p.label.replace(' (', '\n('), r:pearson(rows.map(r=>r.unrate),rows.map(r=>r.cpi)), color:p.color};
-});
+const periodStats = PERIODS.map(p=>{ const rows=filter(p.start,p.end); return {label:p.label, r:pearson(rows.map(r=>r.unrate),rows.map(r=>r.cpi)), color:p.color}; });
 
 new Chart(document.getElementById('barPeriod'),{
   type:'bar',
-  data:{
-    labels: periodStats.map(p=>p.label),
-    datasets:[{
-      label:'Pearson r (UNRATE → CPI)',
-      data: periodStats.map(p=>p.r),
-      backgroundColor: periodStats.map(p=>p.color+'cc'),
-      borderColor: periodStats.map(p=>p.color),
-      borderWidth:1.5,
-    }]
-  },
-  options:{
-    responsive:true,
-    plugins:{legend:{labels:{color:'#cbd5e1'}}},
-    scales:{
-      x:{ticks:{color:'#64748b'}, grid:{color:'#334155'}},
-      y:{min:-1,max:1, ticks:{color:'#64748b'}, grid:{color:'#334155'},
-         title:{display:true,text:'Pearson r',color:'#94a3b8'}},
-    }
-  }
+  data:{ labels: periodStats.map(p=>p.label), datasets:[{ label:'Pearson r (UNRATE to CPI)', data: periodStats.map(p=>p.r), backgroundColor: periodStats.map(p=>p.color+'cc'), borderColor: periodStats.map(p=>p.color), borderWidth:1.5 }] },
+  options:{ responsive:true, plugins:{legend:{labels:{color:'#cbd5e1'}}}, scales:{ x:{ticks:{color:'#64748b'}, grid:{color:'#334155'}}, y:{min:-1,max:1, ticks:{color:'#64748b'}, grid:{color:'#334155'}, title:{display:true,text:'Pearson r',color:'#94a3b8'}} } }
 });
 
-// ── Period table ──────────────────────────────────────────────────────────────
 function interp(r){
-  if(r<-0.6) return '<span style="color:#4ade80">Strong negative ✓</span>';
-  if(r<-0.3) return '<span style="color:#86efac">Moderate negative ✓</span>';
-  if(r<0)    return '<span style="color:#fde68a">Weak negative ~</span>';
-  if(r<0.3)  return '<span style="color:#fdba74">Weak positive ✗</span>';
-  return '<span style="color:#f87171">Strong positive ✗✗</span>';
+  if(r<-0.6) return '<span style="color:#4ade80">Strong negative</span>';
+  if(r<-0.3) return '<span style="color:#86efac">Moderate negative</span>';
+  if(r<0)    return '<span style="color:#fde68a">Weak negative</span>';
+  if(r<0.3)  return '<span style="color:#fdba74">Weak positive</span>';
+  return '<span style="color:#f87171">Strong positive</span>';
 }
 
 document.getElementById('periodTbody').innerHTML = PERIODS.map(p=>{
   const rows=filter(p.start,p.end);
   if(!rows.length) return '';
   const s=stats(rows);
-  return `<tr>
-    <td style="color:${p.color};font-weight:600">${p.label}</td>
-    <td>${s.n}</td>
-    <td>${s.avgCpi.toFixed(2)}</td>
-    <td>${s.avgU.toFixed(2)}</td>
-    <td>${s.r.toFixed(3)}</td>
-    <td>${s.r2.toFixed(3)}</td>
-    <td>${s.b1.toFixed(3)}</td>
-    <td>${interp(s.r)}</td>
-  </tr>`;
+  return `<tr><td style="color:${p.color};font-weight:600">${p.label}</td><td>${s.n}</td><td>${s.avgCpi.toFixed(2)}</td><td>${s.avgU.toFixed(2)}</td><td>${s.r.toFixed(3)}</td><td>${s.r2.toFixed(3)}</td><td>${s.b1.toFixed(3)}</td><td>${interp(s.r)}</td></tr>`;
 }).join('');
 </script>
 </body>
