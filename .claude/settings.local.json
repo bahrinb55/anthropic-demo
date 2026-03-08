@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(/c/Python314/python:*)",
+      "Bash(PYTHONIOENCODING=utf-8 /c/Python314/python:*)",
+      "Bash(echo:*)",
+      "Bash(then grep:*)",
+      "Bash(node:*)",
+      "Bash(PYTHONIOENCODING=utf-8 python:*)",
+      "Bash(bash .claude/skills/fred-api/scripts/fred_fetch.sh:*)",
+      "Bash(cd:*)",
+      "Bash(python fred_analysis:*)",
+      "Bash(python:*)",
+      "Bash(source .env:*)"
+    ]
+  }
+}
