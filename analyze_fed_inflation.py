@@ -133,12 +133,12 @@ try:
     import matplotlib.patches as mpatches
 
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(14, 14))
-    fig.suptitle("Federal Funds Rate vs CPI Inflation (2006–2026)\nSource: FRED – Federal Reserve Bank of St. Louis",
+    fig.suptitle("Federal Funds Rate vs CPI Inflation (2006\u20132026)\nSource: FRED \u2013 Federal Reserve Bank of St. Louis",
                  fontsize=14, fontweight="bold", y=0.98)
 
     pydt = [datetime(d.year, d.month, d.day) for d in dates]
 
-    # Panel 1 — Dual-axis overlay
+    # Panel 1 \u2014 Dual-axis overlay
     ax1.set_title("Federal Funds Rate & YoY Inflation Overlay", fontsize=12)
     l1, = ax1.plot(pydt, fed_vals, color="#1565C0", linewidth=2, label="Fed Funds Rate (%)")
     ax1.set_ylabel("Fed Funds Rate (%)", color="#1565C0")
@@ -149,23 +149,10 @@ try:
     ax1b.tick_params(axis="y", labelcolor="#C62828")
     ax1b.axhline(2, color="#C62828", linewidth=0.8, linestyle=":", alpha=0.6)
     ax1b.text(pydt[-1], 2.2, "2% target", color="#C62828", fontsize=8, ha="right")
-    # Shade episodes
-    shades = [
-        (date(2007, 12, 1), date(2009, 6, 30),  "#FFF9C4", "GFC"),
-        (date(2020, 2, 1),  date(2020, 6, 30),  "#E8F5E9", "COVID"),
-        (date(2021, 6, 1),  date(2023, 6, 30),  "#FCE4EC", "Post-COVID\nInflation"),
-        (date(2022, 3, 1),  date(2023, 12, 31), "#E3F2FD", "Tightening\nCycle"),
-    ]
-    for s, e, col, lbl in shades:
-        ax1.axvspan(datetime(s.year, s.month, s.day),
-                    datetime(e.year, e.month, e.day), alpha=0.35, color=col)
-        mid = datetime(s.year + (e.year - s.year)//2, (s.month + e.month)//2 or 1, 15)
-        ax1.text(mid, ax1.get_ylim()[1] * 0.85 if ax1.get_ylim()[1] else 5,
-                 lbl, fontsize=7, ha="center", color="grey")
     ax1.legend(handles=[l1, l2], loc="upper left", fontsize=9)
     ax1.grid(alpha=0.3)
 
-    # Panel 2 — Rate of change in Fed Funds (month-over-month)
+    # Panel 2 \u2014 Rate of change
     fed_changes = [fed_vals[i] - fed_vals[i-1] for i in range(1, len(fed_vals))]
     colors_bar  = ["#1565C0" if c >= 0 else "#EF5350" for c in fed_changes]
     ax2.bar(pydt[1:], fed_changes, color=colors_bar, width=25, alpha=0.85)
@@ -173,30 +160,20 @@ try:
     ax2.set_ylabel("Change (percentage points)")
     ax2.axhline(0, color="black", linewidth=0.8)
     ax2.grid(alpha=0.3)
-    hike_patch = mpatches.Patch(color="#1565C0", label="Rate Hike")
-    cut_patch  = mpatches.Patch(color="#EF5350", label="Rate Cut")
-    ax2.legend(handles=[hike_patch, cut_patch], fontsize=9)
 
-    # Panel 3 — Scatter: Fed Rate vs Inflation
-    ax3.scatter(fed_vals, inf_vals, c=range(len(fed_vals)), cmap="viridis",
-                alpha=0.65, s=30, zorder=3)
-    # Linear trend line
+    # Panel 3 \u2014 Scatter
+    ax3.scatter(fed_vals, inf_vals, c=range(len(fed_vals)), cmap="viridis", alpha=0.65, s=30, zorder=3)
     mx_ = sum(fed_vals)/n
     my_ = sum(inf_vals)/n
     m_  = sum((f-mx_)*(i-my_) for f,i in zip(fed_vals,inf_vals)) / sum((f-mx_)**2 for f in fed_vals)
     b_  = my_ - m_*mx_
     x0, x1 = min(fed_vals), max(fed_vals)
     ax3.plot([x0, x1], [m_*x0+b_, m_*x1+b_], "r--", linewidth=1.5, label=f"Trend  r={corr:.2f}")
-    ax3.axhline(2, color="grey", linewidth=0.8, linestyle=":", label="2% inflation target")
     ax3.set_xlabel("Federal Funds Rate (%)")
     ax3.set_ylabel("CPI Inflation YoY (%)")
-    ax3.set_title(f"Fed Funds Rate vs Inflation — Scatter (Pearson r = {corr:.3f})", fontsize=12)
+    ax3.set_title(f"Fed Funds Rate vs Inflation \u2014 Scatter (Pearson r = {corr:.3f})", fontsize=12)
     ax3.legend(fontsize=9)
     ax3.grid(alpha=0.3)
-    sm = plt.cm.ScalarMappable(cmap="viridis", norm=plt.Normalize(0, len(dates)-1))
-    sm.set_array([])
-    cbar = plt.colorbar(sm, ax=ax3)
-    cbar.set_label("Time  (2006 -> 2026)", fontsize=8)
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     out_path = os.path.join(BASE, "fed_vs_inflation.png")
@@ -204,6 +181,6 @@ try:
     print(f"\nChart saved: {out_path}")
     plt.close()
 except ImportError:
-    print("\n[matplotlib not available — skipping chart generation]")
+    print("\n[matplotlib not available \u2014 skipping chart generation]")
 
 print("\nDone.")
