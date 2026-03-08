@@ -15,7 +15,13 @@
       "Bash(cd:*)",
       "Bash(python fred_analysis:*)",
       "Bash(python:*)",
-      "Bash(source .env:*)"
+      "Bash(source .env:*)",
+      "Bash(py:*)",
+      "mcp__github__push_files",
+      "mcp__github__create_pull_request",
+      "mcp__github__list_commits",
+      "mcp__github__list_pull_requests",
+      "mcp__github__merge_pull_request"
     ]
   }
 }

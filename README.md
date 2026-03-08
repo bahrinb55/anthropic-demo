@@ -5,7 +5,7 @@ Interest rates vs inflation :
     - Federal Funds Rate (FEDFUNDS)
     - CPI Inflation (CPIAUCSL)
     Analyze how interest rate changes relate to inflation trends.
-    Generate HTML file to analyse the result and explain the relationship.
+    Generate HTML file to analyse the result and explain the relationship name it index.html.
 
 use github mcp to create a new PR and merge it to main branch in antrhopic-demo repo 
 
@@ -15,4 +15,4 @@ Inflation vs unemployment :
     - Unemployment rate (UNRATE)
 
     Analyze whether the Phillips Curve relationship still holds over the past 20 years.
-    Create HTML file to analyse the result and compute correlation.
+    Create HTML file to analyse the result and compute correlation name it index.html.
