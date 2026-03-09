@@ -7,7 +7,7 @@ Interest rates vs inflation :
     Analyze how interest rate changes relate to inflation trends.
     Generate HTML file to analyse the result and explain the relationship name it index.html.
 
-only use the Github MCP to create a new PR and merge it to main branch in antrhopic-demo repo 
+only use the Github MCP to commit index.html and create a new PR and merge it to main branch in antrhopic-demo repository
 
 Inflation vs unemployment :
     Fetch data for:
