@@ -1,5 +1,5 @@
 import csv
-
+ 
 # Load data
 def load_csv(path):
     data = {}
