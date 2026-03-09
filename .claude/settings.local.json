@@ -15,7 +15,41 @@
       "Bash(cd:*)",
       "Bash(python fred_analysis:*)",
       "Bash(python:*)",
-      "Bash(source .env:*)"
+      "Bash(source .env:*)",
+      "Bash(py:*)",
+      "mcp__github__push_files",
+      "mcp__github__create_pull_request",
+      "mcp__github__list_commits",
+      "mcp__github__list_pull_requests",
+      "mcp__github__merge_pull_request",
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(python3:*)",
+      "Bash(python3.exe:*)",
+      "Read(//d/mywork/Projet/AnthropicDemo/DemoGit/anthropic-demo/$TEMP/**)",
+      "Read(//d/mywork/Projet/AnthropicDemo/DemoGit/anthropic-demo/$TMP/**)",
+      "mcp__github__get_pull_request",
+      "mcp__github__get_file_contents",
+      "mcp__github__update_pull_request_branch",
+      "mcp__github__get_pull_request_files",
+      "mcp__github__update_issue",
+      "mcp__github__create_branch",
+      "mcp__github__list_issues",
+      "Bash(chmod +x:*)",
+      "Bash(where:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-env.sh"
+          }
+        ]
+      }
     ]
   }
 }

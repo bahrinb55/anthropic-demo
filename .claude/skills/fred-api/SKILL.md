@@ -11,7 +11,7 @@ Fetch and explore economic data using the shell script at `.claude/skills/fred-a
 
 ## Prerequisites
 
-- `curl` and python3
+- `curl` and python
 - A FRED API key (free at https://fred.stlouisfed.org/docs/api/api_key.html)
 - Set the key as environment variable `FRED_API_KEY` or in a `.env` file in the project root
 

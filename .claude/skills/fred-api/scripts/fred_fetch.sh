@@ -9,10 +9,10 @@ BASE_URL="https://api.stlouisfed.org/fred"
 
 # --- Detect python command (python3 or python) ---
 PYTHON=""
-if python3 --version &>/dev/null; then
-  PYTHON="python3"
-elif python --version &>/dev/null; then
+if python --version &>/dev/null; then
   PYTHON="python"
+elif python3 --version &>/dev/null; then
+  PYTHON="python3"
 else
   echo "Error: python not found." >&2
   exit 1
