@@ -1,17 +1,4 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write|Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-env.sh"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(cp:*)",
@@ -48,7 +35,21 @@
       "mcp__github__update_issue",
       "mcp__github__create_branch",
       "mcp__github__list_issues",
-      "Bash(chmod +x:*)"
+      "Bash(chmod +x:*)",
+      "Bash(where:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-env.sh"
+          }
+        ]
+      }
     ]
   }
 }
