@@ -36,7 +36,8 @@
       "mcp__github__create_branch",
       "mcp__github__list_issues",
       "Bash(chmod +x:*)",
-      "Bash(where:*)"
+      "Bash(where:*)",
+      "mcp__github__get_issue"
     ]
   },
   "hooks": {
