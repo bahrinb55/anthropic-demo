@@ -4,6 +4,7 @@ Interest rates vs inflation :
     Fetch 20 years of data for:
     - Federal Funds Rate (FEDFUNDS)
     - CPI Inflation (CPIAUCSL)
+    and put the result into CSV files
     
     Create analysis.py to Analyze how interest rate changes relate to inflation trends.
 
