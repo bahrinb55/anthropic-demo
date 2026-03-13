@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interest Rates vs Inflation — 20-Year Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+      border-bottom: 1px solid #2d3748;
+      padding: 2rem 2.5rem;
+    }
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      color: #94a3b8;
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #1e3a5f;
+      color: #60a5fa;
+      border: 1px solid #2563eb44;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Stat cards ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: #4a5568; }
+    .stat-card .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.3rem; }
+    .stat-card .sub { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
+    .blue  { color: #60a5fa; }
+    .red   { color: #f87171; }
+    .green { color: #4ade80; }
+    .amber { color: #fbbf24; }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #2d3748;
+    }
+
+    /* ── Chart cards ── */
+    .chart-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .chart-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 0.3rem;
+    }
+    .chart-card .chart-desc {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-bottom: 1.25rem;
+    }
+    .chart-wrap { position: relative; height: 320px; }
+
+    /* ── Two-column layout ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Episode table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    thead tr { border-bottom: 1px solid #374151; }
+    thead th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+    }
+    tbody tr { border-bottom: 1px solid #1f2937; transition: background 0.15s; }
+    tbody tr:hover { background: #1f2937; }
+    tbody td { padding: 0.75rem 1rem; }
+    .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Insight boxes ── */
+    .insights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .insight {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-left: 3px solid;
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+    .insight h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .insight p  { font-size: 0.82rem; color: #94a3b8; line-height: 1.6; }
+    .insight.blue-border  { border-left-color: #3b82f6; }
+    .insight.red-border   { border-left-color: #ef4444; }
+    .insight.green-border { border-left-color: #22c55e; }
+    .insight.amber-border { border-left-color: #f59e0b; }
+
+    footer {
+      text-align: center;
+      color: #374151;
+      font-size: 0.78rem;
+      padding: 2rem;
+      border-top: 1px solid #1f2937;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Federal Funds Rate vs. CPI Inflation</h1>
+  <p>20-Year Relationship Analysis &mdash; March 2006 to February 2026</p>
+  <span class="badge">Source: FRED &middot; Federal Reserve Economic Data</span>
+</header>
+
+<main>
+
+  <!-- ── Stat Cards ── -->
+  <div class="stats-grid" style="margin-top:2rem;">
+    <div class="stat-card">
+      <div class="label">Avg Fed Funds Rate</div>
+      <div class="value blue">1.54%</div>
+      <div class="sub">Std dev: 1.87%</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Peak Fed Rate</div>
+      <div class="value blue">5.33%</div>
+      <div class="sub">Jul 2023 &ndash; Aug 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Avg YoY Inflation</div>
+      <div class="value red">2.52%</div>
+      <div class="sub">Std dev: 1.96%</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Peak Inflation</div>
+      <div class="value red">8.98%</div>
+      <div class="sub">Jun 2022</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Contemporaneous r</div>
+      <div class="value amber">0.304</div>
+      <div class="sub">p &lt; 0.0001</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Lagged r (12 months)</div>
+      <div class="value green">0.039</div>
+      <div class="sub">p = 0.554 (n.s.)</div>
+    </div>
+  </div>
+
+  <!-- ── Chart 1: Time Series ── -->
+  <div class="chart-card">
+    <h2>Interest Rate &amp; Inflation Over Time</h2>
+    <p class="chart-desc">Federal Funds Rate (left axis, blue) vs. Year-over-Year CPI Inflation (right axis, red). Shaded regions mark key monetary policy episodes.</p>
+    <div class="chart-wrap">
+      <canvas id="timeSeriesChart"></canvas>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- ── Chart 2: Scatter ── -->
+    <div class="chart-card">
+      <h2>Lagged Scatter: Fed Rate vs. Inflation</h2>
+      <p class="chart-desc">Each dot = one month. X-axis is the Fed rate 12 months prior. OLS regression line shown.</p>
+      <div class="chart-wrap">
+        <canvas id="scatterChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ── Chart 3: Cycle bars ── -->
+    <div class="chart-card">
+      <h2>Average Inflation by Policy Cycle</h2>
+      <p class="chart-desc">Months classified as hike / cut / hold based on month-to-month Fed rate change (&gt;0.1 pp threshold).</p>
+      <div class="chart-wrap">
+        <canvas id="cycleChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Episode Table ── -->
+  <div class="chart-card">
+    <h2>Key Monetary Policy Episodes</h2>
+    <p class="chart-desc">Average Fed Funds Rate and YoY inflation within each defined episode.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Episode</th>
+          <th>Period</th>
+          <th>Avg Fed Rate</th>
+          <th>Avg Inflation</th>
+          <th>Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="dot" style="background:#60a5fa;"></span>GFC Tightening End</td>
+          <td>Jan 2006 &ndash; Sep 2007</td>
+          <td class="blue">5.13%</td>
+          <td>2.55%</td>
+          <td>Inflation contained at target</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#a78bfa;"></span>Post-GFC ZIRP Era</td>
+          <td>Jan 2009 &ndash; Dec 2015</td>
+          <td class="blue">0.13%</td>
+          <td class="green">1.39%</td>
+          <td>Below-target inflation, deflationary risk</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#34d399;"></span>2015&ndash;2018 Hike Cycle</td>
+          <td>Dec 2015 &ndash; Jul 2019</td>
+          <td class="blue">1.27%</td>
+          <td>1.88%</td>
+          <td>Gradual normalization, soft landing</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#fb923c;"></span>COVID Emergency Cuts</td>
+          <td>Mar 2020 &ndash; Feb 2022</td>
+          <td class="blue">0.10%</td>
+          <td class="amber">3.41%</td>
+          <td>ZIRP amid supply-shock inflation build-up</td>
+        </tr>
+        <tr>
+          <td><span class="dot" style="background:#f87171;"></span>2022&ndash;2023 Hike Cycle</td>
+          <td>Mar 2022 &ndash; Dec 2023</td>
+          <td class="blue">3.65%</td>
+          <td class="red">5.92%</td>
+          <td>Fastest hiking cycle in 40 years; inflation peaked at 8.98%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Insights ── -->
+  <div class="section-title">Key Findings &amp; Interpretation</div>
+  <div class="insights">
+    <div class="insight blue-border">
+      <h3 class="blue">Weak Lagged Correlation</h3>
+      <p>The lagged correlation (r&nbsp;=&nbsp;0.039, p&nbsp;=&nbsp;0.554) shows that the Fed rate 12 months prior has <em>no statistically significant linear relationship</em> with current inflation. Monetary policy transmission takes longer than one year and is highly non-linear.</p>
+    </div>
+    <div class="insight red-border">
+      <h3 class="red">Rates Rise Because of Inflation</h3>
+      <p>The positive contemporaneous correlation (r&nbsp;=&nbsp;0.304) is largely <em>reverse causation</em>: the Fed raises rates in response to high inflation, not the other way around. Hike months average 4.60% inflation vs. 2.12% during hold months.</p>
+    </div>
+    <div class="insight amber-border">
+      <h3 class="amber">ZIRP &amp; Supply Shocks</h3>
+      <p>The 2020&ndash;2022 COVID era shows the danger of maintaining near-zero rates while supply shocks drive prices. Inflation climbed to nearly 9% while the Fed held at 0&ndash;0.25%, demonstrating that rates alone cannot offset structural supply disruptions.</p>
+    </div>
+    <div class="insight green-border">
+      <h3 class="green">Aggressive Hikes Eventually Work</h3>
+      <p>After the Fed raised rates from 0.08% (Mar 2022) to 5.33% (Jul 2023), YoY inflation fell from 8.98% to around 3% by mid-2023, then converged toward the 2% target by 2024 &mdash; demonstrating that sufficiently aggressive tightening can tame even severe inflation within 18&ndash;24 months.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Data: FRED (Federal Reserve Bank of St. Louis) &middot; FEDFUNDS &amp; CPIAUCSL &middot; Mar 2006 &ndash; Feb 2026
+</footer>
+
+<script>
+const DATES = ["2007-03-01","2007-04-01","2007-05-01","2007-06-01","2007-07-01","2007-08-01","2007-09-01","2007-10-01","2007-11-01","2007-12-01","2008-01-01","2008-02-01","2008-03-01","2008-04-01","2008-05-01","2008-06-01","2008-07-01","2008-08-01","2008-09-01","2008-10-01","2008-11-01","2008-12-01","2009-01-01","2009-02-01","2009-03-01","2009-04-01","2009-05-01","2009-06-01","2009-07-01","2009-08-01","2009-09-01","2009-10-01","2009-11-01","2009-12-01","2010-01-01","2010-02-01","2010-03-01","2010-04-01","2010-05-01","2010-06-01","2010-07-01","2010-08-01","2010-09-01","2010-10-01","2010-11-01","2010-12-01","2011-01-01","2011-02-01","2011-03-01","2011-04-01","2011-05-01","2011-06-01","2011-07-01","2011-08-01","2011-09-01","2011-10-01","2011-11-01","2011-12-01","2012-01-01","2012-02-01","2012-03-01","2012-04-01","2012-05-01","2012-06-01","2012-07-01","2012-08-01","2012-09-01","2012-10-01","2012-11-01","2012-12-01","2013-01-01","2013-02-01","2013-03-01","2013-04-01","2013-05-01","2013-06-01","2013-07-01","2013-08-01","2013-09-01","2013-10-01","2013-11-01","2013-12-01","2014-01-01","2014-02-01","2014-03-01","2014-04-01","2014-05-01","2014-06-01","2014-07-01","2014-08-01","2014-09-01","2014-10-01","2014-11-01","2014-12-01","2015-01-01","2015-02-01","2015-03-01","2015-04-01","2015-05-01","2015-06-01","2015-07-01","2015-08-01","2015-09-01","2015-10-01","2015-11-01","2015-12-01","2016-01-01","2016-02-01","2016-03-01","2016-04-01","2016-05-01","2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01","2017-06-01","2017-07-01","2017-08-01","2017-09-01","2017-10-01","2017-11-01","2017-12-01","2018-01-01","2018-02-01","2018-03-01","2018-04-01","2018-05-01","2018-06-01","2018-07-01","2018-08-01","2018-09-01","2018-10-01","2018-11-01","2018-12-01","2019-01-01","2019-02-01","2019-03-01","2019-04-01","2019-05-01","2019-06-01","2019-07-01","2019-08-01","2019-09-01","2019-10-01","2019-11-01","2019-12-01","2020-01-01","2020-02-01","2020-03-01","2020-04-01","2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01","2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01","2021-12-01","2022-01-01","2022-02-01","2022-03-01","2022-04-01","2022-05-01","2022-06-01","2022-07-01","2022-08-01","2022-09-01","2022-10-01","2022-11-01","2022-12-01","2023-01-01","2023-02-01","2023-03-01","2023-04-01","2023-05-01","2023-06-01","2023-07-01","2023-08-01","2023-09-01","2023-10-01","2023-11-01","2023-12-01","2024-01-01","2024-02-01","2024-03-01","2024-04-01","2024-05-01","2024-06-01","2024-07-01","2024-08-01","2024-09-01","2024-10-01","2024-11-01","2024-12-01","2025-01-01","2025-02-01","2025-03-01","2025-04-01","2025-05-01","2025-06-01","2025-07-01","2025-08-01","2025-09-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01"];
+const FED  = [5.26,5.25,5.25,5.25,5.26,5.02,4.94,4.76,4.49,4.24,3.94,2.98,2.61,2.28,1.98,2.0,2.01,2.0,1.81,0.97,0.39,0.16,0.15,0.22,0.18,0.15,0.18,0.21,0.16,0.16,0.15,0.12,0.12,0.12,0.11,0.13,0.16,0.2,0.2,0.18,0.18,0.19,0.19,0.19,0.19,0.18,0.17,0.16,0.14,0.1,0.09,0.09,0.07,0.1,0.08,0.07,0.08,0.07,0.08,0.1,0.13,0.14,0.16,0.16,0.16,0.13,0.14,0.16,0.16,0.16,0.14,0.15,0.14,0.15,0.11,0.09,0.09,0.08,0.08,0.09,0.08,0.09,0.07,0.07,0.08,0.09,0.09,0.1,0.09,0.09,0.09,0.09,0.09,0.12,0.11,0.11,0.11,0.12,0.12,0.13,0.13,0.14,0.14,0.12,0.12,0.24,0.34,0.38,0.36,0.37,0.37,0.38,0.39,0.4,0.4,0.4,0.41,0.54,0.65,0.66,0.79,0.9,0.91,1.04,1.15,1.16,1.15,1.15,1.16,1.3,1.41,1.42,1.51,1.69,1.7,1.82,1.91,1.91,1.95,2.19,2.2,2.27,2.4,2.4,2.41,2.42,2.39,2.38,2.4,2.13,2.04,1.83,1.55,1.55,1.55,1.58,0.65,0.05,0.05,0.08,0.09,0.1,0.09,0.09,0.09,0.09,0.09,0.08,0.07,0.07,0.06,0.08,0.1,0.09,0.08,0.08,0.08,0.08,0.08,0.08,0.2,0.33,0.77,1.21,1.68,2.33,2.56,3.08,3.78,4.1,4.33,4.57,4.65,4.83,5.06,5.08,5.12,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.13,4.83,4.64,4.48,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.22,3.88,3.72,3.64,3.64];
+const INF  = [2.798,2.593,2.71,2.693,2.318,1.897,2.834,3.611,4.373,4.109,4.295,4.143,3.975,3.904,4.088,4.936,5.498,5.308,4.953,3.731,1.1,-0.022,-0.114,0.008,-0.446,-0.576,-1.016,-1.229,-1.959,-1.484,-1.378,-0.224,1.915,2.814,2.621,2.151,2.286,2.207,2.004,1.122,1.341,1.15,1.118,1.167,1.085,1.438,1.701,2.125,2.619,3.077,3.459,3.502,3.58,3.755,3.813,3.522,3.451,3.062,3.009,2.898,2.583,2.273,1.738,1.654,1.418,1.686,1.95,2.156,1.796,1.76,1.684,2.018,1.519,1.139,1.39,1.716,1.885,1.539,1.095,0.877,1.233,1.513,1.558,1.12,1.613,2.015,2.167,2.059,1.974,1.715,1.684,1.61,1.232,0.653,-0.23,-0.087,-0.022,-0.104,0.035,0.18,0.226,0.241,0.009,0.128,0.436,0.639,1.238,0.847,0.892,1.173,1.078,1.079,0.868,1.055,1.549,1.686,1.684,2.051,2.51,2.81,2.441,2.176,1.856,1.641,1.725,1.928,2.181,2.021,2.172,2.13,2.151,2.263,2.331,2.471,2.782,2.808,2.854,2.643,2.332,2.492,2.147,2.002,1.488,1.519,1.883,2.001,1.796,1.671,1.826,1.738,1.684,1.734,2.092,2.32,2.6,2.341,1.494,0.313,0.198,0.717,0.997,1.281,1.391,1.23,1.176,1.32,1.374,1.67,2.668,4.133,4.918,5.296,5.245,5.152,5.351,6.235,6.902,7.174,7.559,7.937,8.572,8.232,8.538,8.979,8.463,8.223,8.192,7.759,7.123,6.405,6.327,5.958,4.918,4.95,4.132,3.071,3.288,3.723,3.687,3.251,3.133,3.316,3.088,3.157,3.487,3.361,3.244,2.97,2.941,2.607,2.426,2.579,2.719,2.871,2.991,2.802,2.382,2.325,2.377,2.68,2.743,2.939,3.023,2.696,2.653,2.391,2.434];
+
+const LABELS = DATES.map(d => d.slice(0,7));
+
+// ── helpers ──
+function idx(dateStr) { return DATES.findIndex(d => d.startsWith(dateStr)); }
+
+// ── shade plugin helper ──
+function band(x1, x2, color, label) {
+  return {
+    type:'box', xMin: idx(x1), xMax: idx(x2),
+    backgroundColor: color, borderWidth: 0,
+    label: { content: label, display: true, position:'start',
+             color:'#94a3b8', font:{size:9}, yAdjust:-8 }
+  };
+}
+
+// ── Chart 1: Time Series ──
+new Chart(document.getElementById('timeSeriesChart'), {
+  data: {
+    labels: LABELS,
+    datasets: [
+      { type:'line', label:'Fed Funds Rate (%)', data: FED, yAxisID:'y1',
+        borderColor:'#3b82f6', backgroundColor:'transparent',
+        borderWidth:2, pointRadius:0, tension:0.3 },
+      { type:'line', label:'YoY Inflation (%)', data: INF, yAxisID:'y2',
+        borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.07)',
+        fill:true, borderWidth:2, pointRadius:0, tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ labels:{ color:'#94a3b8', boxWidth:12 }},
+      annotation:{ annotations:{
+        zirp:  band('2009-01','2015-12','rgba(96,165,250,0.07)','ZIRP Era'),
+        hike22:band('2022-03','2023-12','rgba(239,68,68,0.08)','2022-23 Hikes'),
+        covid: band('2020-03','2022-02','rgba(251,191,36,0.07)','COVID cuts'),
+      }}
+    },
+    scales:{
+      x:{ ticks:{ color:'#6b7280', maxTicksLimit:10, maxRotation:0 }, grid:{ color:'#1f2937' }},
+      y1:{ position:'left',  ticks:{ color:'#3b82f6' }, grid:{ color:'#1f2937' },
+           title:{ display:true, text:'Fed Rate (%)', color:'#3b82f6', font:{size:11} }},
+      y2:{ position:'right', ticks:{ color:'#ef4444' }, grid:{ drawOnChartArea:false },
+           title:{ display:true, text:'Inflation (%)', color:'#ef4444', font:{size:11} }}
+    }
+  }
+});
+
+// ── Chart 2: Scatter (lagged 12m) ──
+const LAG = 12;
+const scatterData = [];
+for (let i = LAG; i < FED.length; i++) {
+  if (FED[i-LAG] != null && INF[i] != null)
+    scatterData.push({ x: FED[i-LAG], y: INF[i] });
+}
+// OLS
+const xs = scatterData.map(p=>p.x), ys = scatterData.map(p=>p.y);
+const n = xs.length, mx = xs.reduce((a,b)=>a+b)/n, my = ys.reduce((a,b)=>a+b)/n;
+const slope = xs.map((x,i)=>(x-mx)*(ys[i]-my)).reduce((a,b)=>a+b) /
+              xs.map(x=>(x-mx)**2).reduce((a,b)=>a+b);
+const intc  = my - slope*mx;
+const xMin = Math.min(...xs), xMax = Math.max(...xs);
+const olsLine = [{ x:xMin, y:slope*xMin+intc }, { x:xMax, y:slope*xMax+intc }];
+
+new Chart(document.getElementById('scatterChart'), {
+  data:{
+    datasets:[
+      { type:'scatter', label:'Month (lagged)', data:scatterData,
+        backgroundColor:'rgba(74,222,128,0.25)', pointRadius:3,
+        pointHoverRadius:5, borderColor:'rgba(74,222,128,0.5)', borderWidth:1 },
+      { type:'line', label:'OLS regression', data:olsLine,
+        borderColor:'#f59e0b', borderWidth:2, pointRadius:0, fill:false }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:'#94a3b8', boxWidth:12 }}},
+    scales:{
+      x:{ title:{ display:true, text:'Fed Rate 12m ago (%)', color:'#94a3b8', font:{size:11}},
+          ticks:{ color:'#6b7280' }, grid:{ color:'#1f2937' }},
+      y:{ title:{ display:true, text:'YoY Inflation (%)', color:'#94a3b8', font:{size:11}},
+          ticks:{ color:'#6b7280' }, grid:{ color:'#1f2937' }}
+    }
+  }
+});
+
+// ── Chart 3: Cycle bars ──
+new Chart(document.getElementById('cycleChart'), {
+  type:'bar',
+  data:{
+    labels:['Hike months\n(n=29)','Cut months\n(n=26)','Hold months\n(n=172)'],
+    datasets:[{
+      label:'Avg YoY Inflation (%)',
+      data:[4.60, 2.83, 2.12],
+      backgroundColor:['rgba(239,68,68,0.7)','rgba(96,165,250,0.7)','rgba(148,163,184,0.5)'],
+      borderColor:['#ef4444','#3b82f6','#64748b'],
+      borderWidth:1, borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:false },
+      tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.y.toFixed(2)}%` }}
+    },
+    scales:{
+      x:{ ticks:{ color:'#94a3b8' }, grid:{ color:'#1f2937' }},
+      y:{ ticks:{ color:'#6b7280', callback: v => v+'%' }, grid:{ color:'#1f2937' },
+          title:{ display:true, text:'Avg Inflation (%)', color:'#94a3b8', font:{size:11}}}
+    }
+  }
+});
+</script>
+</body>
+</html>
