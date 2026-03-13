@@ -3,440 +3,503 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interest Rates vs Inflation — 20-Year Analysis</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <title>Interest Rates &amp; Inflation — 20-Year Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3a;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --blue: #3b82f6;
+      --red: #ef4444;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --purple: #a855f7;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #0f1117;
-      color: #e2e8f0;
-      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
     header {
-      background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
-      border-bottom: 1px solid #2d3748;
-      padding: 2rem 2.5rem;
+      background: linear-gradient(135deg, #1e2235 0%, #111827 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
     }
-    header h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-    header p {
-      color: #94a3b8;
-      margin-top: 0.4rem;
-      font-size: 0.95rem;
-    }
-    .badge {
-      display: inline-block;
-      margin-top: 0.75rem;
-      padding: 0.2rem 0.7rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: #1e3a5f;
-      color: #60a5fa;
-      border: 1px solid #2563eb44;
-    }
+    header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+    header p  { color: var(--muted); margin-top: .4rem; font-size: .95rem; }
 
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
-    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
-    /* ── Stat cards ── */
-    .stats-grid {
+    /* ── KPI row ── */
+    .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1rem;
       margin-bottom: 2.5rem;
     }
-    .stat-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-      transition: border-color 0.2s;
+      padding: 1.2rem 1.4rem;
     }
-    .stat-card:hover { border-color: #4a5568; }
-    .stat-card .label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
-    .stat-card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.3rem; }
-    .stat-card .sub { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
-    .blue  { color: #60a5fa; }
-    .red   { color: #f87171; }
-    .green { color: #4ade80; }
-    .amber { color: #fbbf24; }
+    .kpi .label { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .kpi .value { font-size: 1.8rem; font-weight: 700; margin-top: .2rem; }
+    .kpi .sub   { font-size: .8rem; color: var(--muted); margin-top: .1rem; }
+    .blue   { color: var(--blue);   } .red  { color: var(--red);   }
+    .green  { color: var(--green);  } .amber{ color: var(--amber); } .purple{ color: var(--purple); }
 
-    /* ── Section titles ── */
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #cbd5e1;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #2d3748;
-    }
-
-    /* ── Chart cards ── */
-    .chart-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
+    /* ── Sections ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 1.5rem;
+      padding: 1.8rem;
       margin-bottom: 2rem;
     }
-    .chart-card h2 {
-      font-size: 1rem;
+    .section h2 {
+      font-size: 1.1rem;
       font-weight: 600;
-      color: #e2e8f0;
-      margin-bottom: 0.3rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
     }
-    .chart-card .chart-desc {
-      font-size: 0.82rem;
-      color: #64748b;
-      margin-bottom: 1.25rem;
+    .section h2 .badge {
+      background: var(--border);
+      border-radius: 6px;
+      padding: .15rem .55rem;
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    .chart-wrap { position: relative; height: 320px; }
+
+    /* ── Chart wrapper ── */
+    .chart-wrap { position: relative; width: 100%; }
+    .chart-wrap canvas { width: 100% !important; }
 
     /* ── Two-column layout ── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
 
-    /* ── Episode table ── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.875rem;
-    }
-    thead tr { border-bottom: 1px solid #374151; }
-    thead th {
-      text-align: left;
-      padding: 0.6rem 1rem;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #6b7280;
-    }
-    tbody tr { border-bottom: 1px solid #1f2937; transition: background 0.15s; }
-    tbody tr:hover { background: #1f2937; }
-    tbody td { padding: 0.75rem 1rem; }
-    .dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-
     /* ── Insight boxes ── */
-    .insights {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
+    .insights { display: flex; flex-direction: column; gap: .85rem; }
     .insight {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-left: 3px solid;
-      border-radius: 10px;
-      padding: 1.1rem 1.25rem;
+      border-radius: 8px;
+      padding: .9rem 1.1rem;
     }
-    .insight h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .insight p  { font-size: 0.82rem; color: #94a3b8; line-height: 1.6; }
-    .insight.blue-border  { border-left-color: #3b82f6; }
-    .insight.red-border   { border-left-color: #ef4444; }
-    .insight.green-border { border-left-color: #22c55e; }
-    .insight.amber-border { border-left-color: #f59e0b; }
+    .insight.blue   { border-left-color: var(--blue);   }
+    .insight.red    { border-left-color: var(--red);    }
+    .insight.green  { border-left-color: var(--green);  }
+    .insight.amber  { border-left-color: var(--amber);  }
+    .insight.purple { border-left-color: var(--purple); }
+    .insight strong { display: block; margin-bottom: .25rem; font-size: .92rem; }
+    .insight p      { font-size: .85rem; color: var(--muted); }
+
+    /* ── Period table ── */
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th { text-align: left; padding: .6rem .8rem; color: var(--muted); font-weight: 500;
+         border-bottom: 1px solid var(--border); font-size: .78rem; text-transform: uppercase; letter-spacing:.06em; }
+    td { padding: .6rem .8rem; border-bottom: 1px solid #22253a; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .pos { color: var(--green); } .neg { color: var(--red); }
+
+    /* ── Relationship explainer ── */
+    .explainer { margin-top: 1.5rem; }
+    .explainer h3 { font-size: 1rem; font-weight: 600; margin-bottom: .8rem; color: var(--text); }
+    .explainer p  { font-size: .88rem; color: var(--muted); margin-bottom: .7rem; }
+    .explainer ul { padding-left: 1.2rem; }
+    .explainer li { font-size: .88rem; color: var(--muted); margin-bottom: .4rem; }
+
+    /* ── Timeline band ── */
+    .timeline { display: flex; flex-direction: column; gap: .5rem; }
+    .tband {
+      display: grid;
+      grid-template-columns: 130px 1fr auto;
+      align-items: center;
+      gap: .8rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .83rem;
+    }
+    .tband .era  { font-weight: 600; }
+    .tband .bar-wrap { height: 8px; background: #222535; border-radius: 4px; overflow: hidden; }
+    .tband .bar  { height: 100%; border-radius: 4px; }
+    .tband .vals { white-space: nowrap; color: var(--muted); font-size: .78rem; }
 
     footer {
       text-align: center;
-      color: #374151;
-      font-size: 0.78rem;
       padding: 2rem;
-      border-top: 1px solid #1f2937;
+      color: var(--muted);
+      font-size: .8rem;
+      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Federal Funds Rate vs. CPI Inflation</h1>
-  <p>20-Year Relationship Analysis &mdash; March 2006 to February 2026</p>
-  <span class="badge">Source: FRED &middot; Federal Reserve Economic Data</span>
+  <h1>Federal Funds Rate &amp; Inflation — 20-Year Analysis</h1>
+  <p>Monthly data Jan 2006 – Jan 2026 &nbsp;·&nbsp; FEDFUNDS &amp; CPIAUCSL (FRED / Federal Reserve)</p>
 </header>
 
-<main>
+<div class="container">
 
-  <!-- ── Stat Cards ── -->
-  <div class="stats-grid" style="margin-top:2rem;">
-    <div class="stat-card">
-      <div class="label">Avg Fed Funds Rate</div>
-      <div class="value blue">1.54%</div>
-      <div class="sub">Std dev: 1.87%</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Peak Fed Rate</div>
-      <div class="value blue">5.33%</div>
-      <div class="sub">Jul 2023 &ndash; Aug 2024</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Avg YoY Inflation</div>
-      <div class="value red">2.52%</div>
-      <div class="sub">Std dev: 1.96%</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Peak Inflation</div>
-      <div class="value red">8.98%</div>
-      <div class="sub">Jun 2022</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Contemporaneous r</div>
-      <div class="value amber">0.304</div>
-      <div class="sub">p &lt; 0.0001</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Lagged r (12 months)</div>
-      <div class="value green">0.039</div>
-      <div class="sub">p = 0.554 (n.s.)</div>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi"><div class="label">Current Fed Rate</div><div class="value blue">3.64%</div><div class="sub">Jan 2026 — easing cycle</div></div>
+    <div class="kpi"><div class="label">Current Inflation</div><div class="value green">2.39%</div><div class="sub">Jan 2026 — near target</div></div>
+    <div class="kpi"><div class="label">Real Rate</div><div class="value amber">+1.25%</div><div class="sub">Positive = restrictive policy</div></div>
+    <div class="kpi"><div class="label">Peak Inflation</div><div class="value red">8.98%</div><div class="sub">Jun 2022 — 40-year high</div></div>
+    <div class="kpi"><div class="label">Peak Fed Rate</div><div class="value purple">5.33%</div><div class="sub">Jul 2023 – Sep 2024</div></div>
+    <div class="kpi"><div class="label">Neg. Real Rate Months</div><div class="value red">155<span style="font-size:1rem">/228</span></div><div class="sub">68% of the period</div></div>
+  </div>
+
+  <!-- Chart 1: Rate + Inflation overlay -->
+  <div class="section">
+    <h2>Fed Funds Rate vs. Inflation (YoY) <span class="badge">2007–2026</span></h2>
+    <div class="chart-wrap" style="height:320px">
+      <canvas id="chartMain"></canvas>
     </div>
   </div>
 
-  <!-- ── Chart 1: Time Series ── -->
-  <div class="chart-card">
-    <h2>Interest Rate &amp; Inflation Over Time</h2>
-    <p class="chart-desc">Federal Funds Rate (left axis, blue) vs. Year-over-Year CPI Inflation (right axis, red). Shaded regions mark key monetary policy episodes.</p>
-    <div class="chart-wrap">
-      <canvas id="timeSeriesChart"></canvas>
+  <!-- Chart 2: Real Rate + shading -->
+  <div class="section">
+    <h2>Real Interest Rate (Fed Rate − Inflation) <span class="badge">positive = restrictive</span></h2>
+    <div class="chart-wrap" style="height:240px">
+      <canvas id="chartReal"></canvas>
     </div>
   </div>
 
+  <!-- Two-col: period table + insights -->
   <div class="two-col">
-    <!-- ── Chart 2: Scatter ── -->
-    <div class="chart-card">
-      <h2>Lagged Scatter: Fed Rate vs. Inflation</h2>
-      <p class="chart-desc">Each dot = one month. X-axis is the Fed rate 12 months prior. OLS regression line shown.</p>
-      <div class="chart-wrap">
-        <canvas id="scatterChart"></canvas>
+
+    <div class="section">
+      <h2>Period Statistics</h2>
+      <table>
+        <thead>
+          <tr><th>Era</th><th>Avg Rate</th><th>Avg CPI YoY</th><th>Real Rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pre-GFC (2006–08)</td><td>3.90%</td><td>3.60%</td><td class="pos">+0.30%</td></tr>
+          <tr><td>GFC / Zero (2008–15)</td><td>0.16%</td><td>1.44%</td><td class="neg">−1.28%</td></tr>
+          <tr><td>Normalization (2016–20)</td><td>1.32%</td><td>1.90%</td><td class="neg">−0.58%</td></tr>
+          <tr><td>COVID Stimulus (2020–22)</td><td>0.11%</td><td>3.61%</td><td class="neg">−3.50%</td></tr>
+          <tr><td>Inflation Surge (2022–23)</td><td>3.16%</td><td>6.65%</td><td class="neg">−3.50%</td></tr>
+          <tr><td>Easing Cycle (2024–26)</td><td>4.79%</td><td>2.93%</td><td class="pos">+1.86%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Key Insights</h2>
+      <div class="insights">
+        <div class="insight blue">
+          <strong>Rate hikes follow inflation — not the reverse</strong>
+          <p>The overall correlation (r = 0.30) reflects that the Fed <em>reacts</em> to inflation. Rates rise because inflation is already high, not to predict it.</p>
+        </div>
+        <div class="insight red">
+          <strong>2022 surge: Fed was far behind the curve</strong>
+          <p>Inflation hit 8.98% while rates were still near 0%. Real rates reached −8.4% — the loosest monetary conditions in modern history.</p>
+        </div>
+        <div class="insight green">
+          <strong>Tightening cycle worked — but slowly</strong>
+          <p>The 2022–2024 hike of +5.05% drove inflation from ~9% down to ~2.5%. Real rates turned positive in May 2023, signalling genuinely restrictive policy.</p>
+        </div>
+        <div class="insight amber">
+          <strong>Real rate is the true policy gauge</strong>
+          <p>A positive real rate restrains borrowing and spending. The Fed held real rates negative for most of 2008–2023, keeping policy accommodative for 15 years.</p>
+        </div>
+        <div class="insight purple">
+          <strong>Current stance: controlled easing</strong>
+          <p>At 3.64% rate and 2.39% inflation, the real rate (+1.25%) remains positive — the Fed is easing gradually without re-igniting inflation pressure.</p>
+        </div>
       </div>
     </div>
 
-    <!-- ── Chart 3: Cycle bars ── -->
-    <div class="chart-card">
-      <h2>Average Inflation by Policy Cycle</h2>
-      <p class="chart-desc">Months classified as hike / cut / hold based on month-to-month Fed rate change (&gt;0.1 pp threshold).</p>
-      <div class="chart-wrap">
-        <canvas id="cycleChart"></canvas>
+  </div>
+
+  <!-- Scatter: rate vs inflation -->
+  <div class="two-col">
+    <div class="section">
+      <h2>Scatter: Rate vs. Inflation <span class="badge">each dot = 1 month</span></h2>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chartScatter"></canvas>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Lag Correlation Analysis <span class="badge">rate shifted N months</span></h2>
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chartLag"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- ── Episode Table ── -->
-  <div class="chart-card">
-    <h2>Key Monetary Policy Episodes</h2>
-    <p class="chart-desc">Average Fed Funds Rate and YoY inflation within each defined episode.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Episode</th>
-          <th>Period</th>
-          <th>Avg Fed Rate</th>
-          <th>Avg Inflation</th>
-          <th>Outcome</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="dot" style="background:#60a5fa;"></span>GFC Tightening End</td>
-          <td>Jan 2006 &ndash; Sep 2007</td>
-          <td class="blue">5.13%</td>
-          <td>2.55%</td>
-          <td>Inflation contained at target</td>
-        </tr>
-        <tr>
-          <td><span class="dot" style="background:#a78bfa;"></span>Post-GFC ZIRP Era</td>
-          <td>Jan 2009 &ndash; Dec 2015</td>
-          <td class="blue">0.13%</td>
-          <td class="green">1.39%</td>
-          <td>Below-target inflation, deflationary risk</td>
-        </tr>
-        <tr>
-          <td><span class="dot" style="background:#34d399;"></span>2015&ndash;2018 Hike Cycle</td>
-          <td>Dec 2015 &ndash; Jul 2019</td>
-          <td class="blue">1.27%</td>
-          <td>1.88%</td>
-          <td>Gradual normalization, soft landing</td>
-        </tr>
-        <tr>
-          <td><span class="dot" style="background:#fb923c;"></span>COVID Emergency Cuts</td>
-          <td>Mar 2020 &ndash; Feb 2022</td>
-          <td class="blue">0.10%</td>
-          <td class="amber">3.41%</td>
-          <td>ZIRP amid supply-shock inflation build-up</td>
-        </tr>
-        <tr>
-          <td><span class="dot" style="background:#f87171;"></span>2022&ndash;2023 Hike Cycle</td>
-          <td>Mar 2022 &ndash; Dec 2023</td>
-          <td class="blue">3.65%</td>
-          <td class="red">5.92%</td>
-          <td>Fastest hiking cycle in 40 years; inflation peaked at 8.98%</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Relationship explainer -->
+  <div class="section">
+    <h2>Understanding the Relationship</h2>
 
-  <!-- ── Insights ── -->
-  <div class="section-title">Key Findings &amp; Interpretation</div>
-  <div class="insights">
-    <div class="insight blue-border">
-      <h3 class="blue">Weak Lagged Correlation</h3>
-      <p>The lagged correlation (r&nbsp;=&nbsp;0.039, p&nbsp;=&nbsp;0.554) shows that the Fed rate 12 months prior has <em>no statistically significant linear relationship</em> with current inflation. Monetary policy transmission takes longer than one year and is highly non-linear.</p>
+    <div class="two-col">
+      <div class="explainer">
+        <h3>How Monetary Policy Affects Inflation</h3>
+        <p>The Federal Reserve uses the Federal Funds Rate as its primary tool to control inflation. The mechanism works through several channels:</p>
+        <ul>
+          <li><strong>Borrowing costs</strong> — Higher rates make loans more expensive, slowing consumer spending and business investment.</li>
+          <li><strong>Asset prices</strong> — Rising rates reduce equity and housing valuations, dampening the wealth effect.</li>
+          <li><strong>Currency appreciation</strong> — Higher rates attract foreign capital, strengthening the dollar and lowering import prices.</li>
+          <li><strong>Expectations</strong> — Credible rate hikes signal the Fed's commitment, anchoring long-term inflation expectations.</li>
+        </ul>
+        <p style="margin-top:.7rem">The transmission lag is typically <strong>12–18 months</strong> for full economic impact, which is why the Fed must act pre-emptively rather than reactively.</p>
+      </div>
+
+      <div class="explainer">
+        <h3>Why the 2021–2022 Episode Was Unusual</h3>
+        <p>The post-COVID inflation surge was driven by a combination of supply and demand shocks that made it harder to manage:</p>
+        <ul>
+          <li><strong>Supply chain disruptions</strong> from COVID lockdowns constrained goods supply globally.</li>
+          <li><strong>Fiscal stimulus</strong> of ~$5 trillion injected demand into an economy with limited capacity.</li>
+          <li><strong>Energy shock</strong> from the 2022 Russia-Ukraine war pushed energy costs sharply higher.</li>
+          <li><strong>Fed hesitation</strong> — the Fed initially called inflation "transitory," delaying the rate response by ~12 months.</li>
+        </ul>
+        <p style="margin-top:.7rem">The resulting <strong>−8.4% real rate</strong> in early 2022 represented one of the most accommodative monetary stances ever recorded during a high-inflation environment.</p>
+      </div>
     </div>
-    <div class="insight red-border">
-      <h3 class="red">Rates Rise Because of Inflation</h3>
-      <p>The positive contemporaneous correlation (r&nbsp;=&nbsp;0.304) is largely <em>reverse causation</em>: the Fed raises rates in response to high inflation, not the other way around. Hike months average 4.60% inflation vs. 2.12% during hold months.</p>
-    </div>
-    <div class="insight amber-border">
-      <h3 class="amber">ZIRP &amp; Supply Shocks</h3>
-      <p>The 2020&ndash;2022 COVID era shows the danger of maintaining near-zero rates while supply shocks drive prices. Inflation climbed to nearly 9% while the Fed held at 0&ndash;0.25%, demonstrating that rates alone cannot offset structural supply disruptions.</p>
-    </div>
-    <div class="insight green-border">
-      <h3 class="green">Aggressive Hikes Eventually Work</h3>
-      <p>After the Fed raised rates from 0.08% (Mar 2022) to 5.33% (Jul 2023), YoY inflation fell from 8.98% to around 3% by mid-2023, then converged toward the 2% target by 2024 &mdash; demonstrating that sufficiently aggressive tightening can tame even severe inflation within 18&ndash;24 months.</p>
+
+    <!-- Era timeline -->
+    <div style="margin-top:1.5rem">
+      <h3 style="font-size:.95rem; font-weight:600; margin-bottom:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;">Policy Era Timeline</h3>
+      <div class="timeline">
+        <div class="tband">
+          <span class="era blue">2006–2008</span>
+          <div class="bar-wrap"><div class="bar" style="width:73%; background:var(--blue)"></div></div>
+          <span class="vals">Rate 3.90% &nbsp;|&nbsp; CPI 3.60%</span>
+        </div>
+        <div class="tband">
+          <span class="era red">2008–2015</span>
+          <div class="bar-wrap"><div class="bar" style="width:3%; background:var(--red)"></div></div>
+          <span class="vals">Rate 0.16% &nbsp;|&nbsp; CPI 1.44%</span>
+        </div>
+        <div class="tband">
+          <span class="era amber">2016–2020</span>
+          <div class="bar-wrap"><div class="bar" style="width:25%; background:var(--amber)"></div></div>
+          <span class="vals">Rate 1.32% &nbsp;|&nbsp; CPI 1.90%</span>
+        </div>
+        <div class="tband">
+          <span class="era red">2020–2022</span>
+          <div class="bar-wrap"><div class="bar" style="width:2%; background:var(--red)"></div></div>
+          <span class="vals">Rate 0.11% &nbsp;|&nbsp; CPI 3.61%</span>
+        </div>
+        <div class="tband">
+          <span class="era red">2022–2023</span>
+          <div class="bar-wrap"><div class="bar" style="width:60%; background:var(--red)"></div></div>
+          <span class="vals">Rate 3.16% &nbsp;|&nbsp; CPI 6.65%</span>
+        </div>
+        <div class="tband">
+          <span class="era green">2024–2026</span>
+          <div class="bar-wrap"><div class="bar" style="width:90%; background:var(--green)"></div></div>
+          <span class="vals">Rate 4.79% &nbsp;|&nbsp; CPI 2.93%</span>
+        </div>
+      </div>
     </div>
   </div>
 
-</main>
+</div><!-- /container -->
 
 <footer>
-  Data: FRED (Federal Reserve Bank of St. Louis) &middot; FEDFUNDS &amp; CPIAUCSL &middot; Mar 2006 &ndash; Feb 2026
+  Data: Federal Reserve Economic Data (FRED) &nbsp;·&nbsp; Series: FEDFUNDS, CPIAUCSL &nbsp;·&nbsp; Analysis generated March 2026
 </footer>
 
 <script>
-const DATES = ["2007-03-01","2007-04-01","2007-05-01","2007-06-01","2007-07-01","2007-08-01","2007-09-01","2007-10-01","2007-11-01","2007-12-01","2008-01-01","2008-02-01","2008-03-01","2008-04-01","2008-05-01","2008-06-01","2008-07-01","2008-08-01","2008-09-01","2008-10-01","2008-11-01","2008-12-01","2009-01-01","2009-02-01","2009-03-01","2009-04-01","2009-05-01","2009-06-01","2009-07-01","2009-08-01","2009-09-01","2009-10-01","2009-11-01","2009-12-01","2010-01-01","2010-02-01","2010-03-01","2010-04-01","2010-05-01","2010-06-01","2010-07-01","2010-08-01","2010-09-01","2010-10-01","2010-11-01","2010-12-01","2011-01-01","2011-02-01","2011-03-01","2011-04-01","2011-05-01","2011-06-01","2011-07-01","2011-08-01","2011-09-01","2011-10-01","2011-11-01","2011-12-01","2012-01-01","2012-02-01","2012-03-01","2012-04-01","2012-05-01","2012-06-01","2012-07-01","2012-08-01","2012-09-01","2012-10-01","2012-11-01","2012-12-01","2013-01-01","2013-02-01","2013-03-01","2013-04-01","2013-05-01","2013-06-01","2013-07-01","2013-08-01","2013-09-01","2013-10-01","2013-11-01","2013-12-01","2014-01-01","2014-02-01","2014-03-01","2014-04-01","2014-05-01","2014-06-01","2014-07-01","2014-08-01","2014-09-01","2014-10-01","2014-11-01","2014-12-01","2015-01-01","2015-02-01","2015-03-01","2015-04-01","2015-05-01","2015-06-01","2015-07-01","2015-08-01","2015-09-01","2015-10-01","2015-11-01","2015-12-01","2016-01-01","2016-02-01","2016-03-01","2016-04-01","2016-05-01","2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01","2017-06-01","2017-07-01","2017-08-01","2017-09-01","2017-10-01","2017-11-01","2017-12-01","2018-01-01","2018-02-01","2018-03-01","2018-04-01","2018-05-01","2018-06-01","2018-07-01","2018-08-01","2018-09-01","2018-10-01","2018-11-01","2018-12-01","2019-01-01","2019-02-01","2019-03-01","2019-04-01","2019-05-01","2019-06-01","2019-07-01","2019-08-01","2019-09-01","2019-10-01","2019-11-01","2019-12-01","2020-01-01","2020-02-01","2020-03-01","2020-04-01","2020-05-01","2020-06-01","2020-07-01","2020-08-01","2020-09-01","2020-10-01","2020-11-01","2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01","2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01","2021-12-01","2022-01-01","2022-02-01","2022-03-01","2022-04-01","2022-05-01","2022-06-01","2022-07-01","2022-08-01","2022-09-01","2022-10-01","2022-11-01","2022-12-01","2023-01-01","2023-02-01","2023-03-01","2023-04-01","2023-05-01","2023-06-01","2023-07-01","2023-08-01","2023-09-01","2023-10-01","2023-11-01","2023-12-01","2024-01-01","2024-02-01","2024-03-01","2024-04-01","2024-05-01","2024-06-01","2024-07-01","2024-08-01","2024-09-01","2024-10-01","2024-11-01","2024-12-01","2025-01-01","2025-02-01","2025-03-01","2025-04-01","2025-05-01","2025-06-01","2025-07-01","2025-08-01","2025-09-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01"];
-const FED  = [5.26,5.25,5.25,5.25,5.26,5.02,4.94,4.76,4.49,4.24,3.94,2.98,2.61,2.28,1.98,2.0,2.01,2.0,1.81,0.97,0.39,0.16,0.15,0.22,0.18,0.15,0.18,0.21,0.16,0.16,0.15,0.12,0.12,0.12,0.11,0.13,0.16,0.2,0.2,0.18,0.18,0.19,0.19,0.19,0.19,0.18,0.17,0.16,0.14,0.1,0.09,0.09,0.07,0.1,0.08,0.07,0.08,0.07,0.08,0.1,0.13,0.14,0.16,0.16,0.16,0.13,0.14,0.16,0.16,0.16,0.14,0.15,0.14,0.15,0.11,0.09,0.09,0.08,0.08,0.09,0.08,0.09,0.07,0.07,0.08,0.09,0.09,0.1,0.09,0.09,0.09,0.09,0.09,0.12,0.11,0.11,0.11,0.12,0.12,0.13,0.13,0.14,0.14,0.12,0.12,0.24,0.34,0.38,0.36,0.37,0.37,0.38,0.39,0.4,0.4,0.4,0.41,0.54,0.65,0.66,0.79,0.9,0.91,1.04,1.15,1.16,1.15,1.15,1.16,1.3,1.41,1.42,1.51,1.69,1.7,1.82,1.91,1.91,1.95,2.19,2.2,2.27,2.4,2.4,2.41,2.42,2.39,2.38,2.4,2.13,2.04,1.83,1.55,1.55,1.55,1.58,0.65,0.05,0.05,0.08,0.09,0.1,0.09,0.09,0.09,0.09,0.09,0.08,0.07,0.07,0.06,0.08,0.1,0.09,0.08,0.08,0.08,0.08,0.08,0.08,0.2,0.33,0.77,1.21,1.68,2.33,2.56,3.08,3.78,4.1,4.33,4.57,4.65,4.83,5.06,5.08,5.12,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.13,4.83,4.64,4.48,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.22,3.88,3.72,3.64,3.64];
-const INF  = [2.798,2.593,2.71,2.693,2.318,1.897,2.834,3.611,4.373,4.109,4.295,4.143,3.975,3.904,4.088,4.936,5.498,5.308,4.953,3.731,1.1,-0.022,-0.114,0.008,-0.446,-0.576,-1.016,-1.229,-1.959,-1.484,-1.378,-0.224,1.915,2.814,2.621,2.151,2.286,2.207,2.004,1.122,1.341,1.15,1.118,1.167,1.085,1.438,1.701,2.125,2.619,3.077,3.459,3.502,3.58,3.755,3.813,3.522,3.451,3.062,3.009,2.898,2.583,2.273,1.738,1.654,1.418,1.686,1.95,2.156,1.796,1.76,1.684,2.018,1.519,1.139,1.39,1.716,1.885,1.539,1.095,0.877,1.233,1.513,1.558,1.12,1.613,2.015,2.167,2.059,1.974,1.715,1.684,1.61,1.232,0.653,-0.23,-0.087,-0.022,-0.104,0.035,0.18,0.226,0.241,0.009,0.128,0.436,0.639,1.238,0.847,0.892,1.173,1.078,1.079,0.868,1.055,1.549,1.686,1.684,2.051,2.51,2.81,2.441,2.176,1.856,1.641,1.725,1.928,2.181,2.021,2.172,2.13,2.151,2.263,2.331,2.471,2.782,2.808,2.854,2.643,2.332,2.492,2.147,2.002,1.488,1.519,1.883,2.001,1.796,1.671,1.826,1.738,1.684,1.734,2.092,2.32,2.6,2.341,1.494,0.313,0.198,0.717,0.997,1.281,1.391,1.23,1.176,1.32,1.374,1.67,2.668,4.133,4.918,5.296,5.245,5.152,5.351,6.235,6.902,7.174,7.559,7.937,8.572,8.232,8.538,8.979,8.463,8.223,8.192,7.759,7.123,6.405,6.327,5.958,4.918,4.95,4.132,3.071,3.288,3.723,3.687,3.251,3.133,3.316,3.088,3.157,3.487,3.361,3.244,2.97,2.941,2.607,2.426,2.579,2.719,2.871,2.991,2.802,2.382,2.325,2.377,2.68,2.743,2.939,3.023,2.696,2.653,2.391,2.434];
+const RAW = [{"date":"2007-01","rate":5.25,"inflation":2.076,"real_rate":3.174},{"date":"2007-02","rate":5.26,"inflation":2.42,"real_rate":2.84},{"date":"2007-03","rate":5.26,"inflation":2.798,"real_rate":2.462},{"date":"2007-04","rate":5.25,"inflation":2.593,"real_rate":2.657},{"date":"2007-05","rate":5.25,"inflation":2.71,"real_rate":2.54},{"date":"2007-06","rate":5.25,"inflation":2.693,"real_rate":2.557},{"date":"2007-07","rate":5.26,"inflation":2.318,"real_rate":2.942},{"date":"2007-08","rate":5.02,"inflation":1.897,"real_rate":3.123},{"date":"2007-09","rate":4.94,"inflation":2.834,"real_rate":2.106},{"date":"2007-10","rate":4.76,"inflation":3.611,"real_rate":1.149},{"date":"2007-11","rate":4.49,"inflation":4.373,"real_rate":0.117},{"date":"2007-12","rate":4.24,"inflation":4.109,"real_rate":0.131},{"date":"2008-01","rate":3.94,"inflation":4.295,"real_rate":-0.355},{"date":"2008-02","rate":2.98,"inflation":4.143,"real_rate":-1.163},{"date":"2008-03","rate":2.61,"inflation":3.975,"real_rate":-1.365},{"date":"2008-04","rate":2.28,"inflation":3.904,"real_rate":-1.624},{"date":"2008-05","rate":1.98,"inflation":4.088,"real_rate":-2.108},{"date":"2008-06","rate":2.0,"inflation":4.936,"real_rate":-2.936},{"date":"2008-07","rate":2.01,"inflation":5.498,"real_rate":-3.488},{"date":"2008-08","rate":2.0,"inflation":5.308,"real_rate":-3.308},{"date":"2008-09","rate":1.81,"inflation":4.953,"real_rate":-3.143},{"date":"2008-10","rate":0.97,"inflation":3.731,"real_rate":-2.761},{"date":"2008-11","rate":0.39,"inflation":1.1,"real_rate":-0.71},{"date":"2008-12","rate":0.16,"inflation":-0.022,"real_rate":0.182},{"date":"2009-01","rate":0.15,"inflation":-0.114,"real_rate":0.264},{"date":"2009-02","rate":0.22,"inflation":0.008,"real_rate":0.212},{"date":"2009-03","rate":0.18,"inflation":-0.446,"real_rate":0.626},{"date":"2009-04","rate":0.15,"inflation":-0.576,"real_rate":0.726},{"date":"2009-05","rate":0.18,"inflation":-1.016,"real_rate":1.196},{"date":"2009-06","rate":0.21,"inflation":-1.229,"real_rate":1.439},{"date":"2009-07","rate":0.16,"inflation":-1.959,"real_rate":2.119},{"date":"2009-08","rate":0.16,"inflation":-1.484,"real_rate":1.644},{"date":"2009-09","rate":0.15,"inflation":-1.378,"real_rate":1.528},{"date":"2009-10","rate":0.12,"inflation":-0.224,"real_rate":0.344},{"date":"2009-11","rate":0.12,"inflation":1.915,"real_rate":-1.795},{"date":"2009-12","rate":0.12,"inflation":2.814,"real_rate":-2.694},{"date":"2010-01","rate":0.11,"inflation":2.621,"real_rate":-2.511},{"date":"2010-02","rate":0.13,"inflation":2.151,"real_rate":-2.021},{"date":"2010-03","rate":0.16,"inflation":2.286,"real_rate":-2.126},{"date":"2010-04","rate":0.2,"inflation":2.207,"real_rate":-2.007},{"date":"2010-05","rate":0.2,"inflation":2.004,"real_rate":-1.804},{"date":"2010-06","rate":0.18,"inflation":1.122,"real_rate":-0.942},{"date":"2010-07","rate":0.18,"inflation":1.341,"real_rate":-1.161},{"date":"2010-08","rate":0.19,"inflation":1.15,"real_rate":-0.96},{"date":"2010-09","rate":0.19,"inflation":1.118,"real_rate":-0.928},{"date":"2010-10","rate":0.19,"inflation":1.167,"real_rate":-0.977},{"date":"2010-11","rate":0.19,"inflation":1.085,"real_rate":-0.895},{"date":"2010-12","rate":0.18,"inflation":1.438,"real_rate":-1.258},{"date":"2011-01","rate":0.17,"inflation":1.701,"real_rate":-1.531},{"date":"2011-02","rate":0.16,"inflation":2.125,"real_rate":-1.965},{"date":"2011-03","rate":0.14,"inflation":2.619,"real_rate":-2.479},{"date":"2011-04","rate":0.1,"inflation":3.077,"real_rate":-2.977},{"date":"2011-05","rate":0.09,"inflation":3.459,"real_rate":-3.369},{"date":"2011-06","rate":0.09,"inflation":3.502,"real_rate":-3.412},{"date":"2011-07","rate":0.07,"inflation":3.58,"real_rate":-3.51},{"date":"2011-08","rate":0.1,"inflation":3.755,"real_rate":-3.655},{"date":"2011-09","rate":0.08,"inflation":3.813,"real_rate":-3.733},{"date":"2011-10","rate":0.07,"inflation":3.522,"real_rate":-3.452},{"date":"2011-11","rate":0.08,"inflation":3.451,"real_rate":-3.371},{"date":"2011-12","rate":0.07,"inflation":3.062,"real_rate":-2.992},{"date":"2012-01","rate":0.08,"inflation":3.009,"real_rate":-2.929},{"date":"2012-02","rate":0.1,"inflation":2.898,"real_rate":-2.798},{"date":"2012-03","rate":0.13,"inflation":2.583,"real_rate":-2.453},{"date":"2012-04","rate":0.14,"inflation":2.273,"real_rate":-2.133},{"date":"2012-05","rate":0.16,"inflation":1.738,"real_rate":-1.578},{"date":"2012-06","rate":0.16,"inflation":1.654,"real_rate":-1.494},{"date":"2012-07","rate":0.16,"inflation":1.418,"real_rate":-1.258},{"date":"2012-08","rate":0.13,"inflation":1.686,"real_rate":-1.556},{"date":"2012-09","rate":0.14,"inflation":1.95,"real_rate":-1.81},{"date":"2012-10","rate":0.16,"inflation":2.156,"real_rate":-1.996},{"date":"2012-11","rate":0.16,"inflation":1.796,"real_rate":-1.636},{"date":"2012-12","rate":0.16,"inflation":1.76,"real_rate":-1.6},{"date":"2013-01","rate":0.14,"inflation":1.684,"real_rate":-1.544},{"date":"2013-02","rate":0.15,"inflation":2.018,"real_rate":-1.868},{"date":"2013-03","rate":0.14,"inflation":1.519,"real_rate":-1.379},{"date":"2013-04","rate":0.15,"inflation":1.139,"real_rate":-0.989},{"date":"2013-05","rate":0.11,"inflation":1.39,"real_rate":-1.28},{"date":"2013-06","rate":0.09,"inflation":1.716,"real_rate":-1.626},{"date":"2013-07","rate":0.09,"inflation":1.885,"real_rate":-1.795},{"date":"2013-08","rate":0.08,"inflation":1.539,"real_rate":-1.459},{"date":"2013-09","rate":0.08,"inflation":1.095,"real_rate":-1.015},{"date":"2013-10","rate":0.09,"inflation":0.877,"real_rate":-0.787},{"date":"2013-11","rate":0.08,"inflation":1.233,"real_rate":-1.153},{"date":"2013-12","rate":0.09,"inflation":1.513,"real_rate":-1.423},{"date":"2014-01","rate":0.07,"inflation":1.558,"real_rate":-1.488},{"date":"2014-02","rate":0.07,"inflation":1.12,"real_rate":-1.05},{"date":"2014-03","rate":0.08,"inflation":1.613,"real_rate":-1.533},{"date":"2014-04","rate":0.09,"inflation":2.015,"real_rate":-1.925},{"date":"2014-05","rate":0.09,"inflation":2.167,"real_rate":-2.077},{"date":"2014-06","rate":0.1,"inflation":2.059,"real_rate":-1.959},{"date":"2014-07","rate":0.09,"inflation":1.974,"real_rate":-1.884},{"date":"2014-08","rate":0.09,"inflation":1.715,"real_rate":-1.625},{"date":"2014-09","rate":0.09,"inflation":1.684,"real_rate":-1.594},{"date":"2014-10","rate":0.09,"inflation":1.61,"real_rate":-1.52},{"date":"2014-11","rate":0.09,"inflation":1.232,"real_rate":-1.142},{"date":"2014-12","rate":0.12,"inflation":0.653,"real_rate":-0.533},{"date":"2015-01","rate":0.11,"inflation":-0.23,"real_rate":0.34},{"date":"2015-02","rate":0.11,"inflation":-0.087,"real_rate":0.197},{"date":"2015-03","rate":0.11,"inflation":-0.022,"real_rate":0.132},{"date":"2015-04","rate":0.12,"inflation":-0.104,"real_rate":0.224},{"date":"2015-05","rate":0.12,"inflation":0.035,"real_rate":0.085},{"date":"2015-06","rate":0.13,"inflation":0.18,"real_rate":-0.05},{"date":"2015-07","rate":0.13,"inflation":0.226,"real_rate":-0.096},{"date":"2015-08","rate":0.14,"inflation":0.241,"real_rate":-0.101},{"date":"2015-09","rate":0.14,"inflation":0.009,"real_rate":0.131},{"date":"2015-10","rate":0.12,"inflation":0.128,"real_rate":-0.008},{"date":"2015-11","rate":0.12,"inflation":0.436,"real_rate":-0.316},{"date":"2015-12","rate":0.24,"inflation":0.639,"real_rate":-0.399},{"date":"2016-01","rate":0.34,"inflation":1.238,"real_rate":-0.898},{"date":"2016-02","rate":0.38,"inflation":0.847,"real_rate":-0.467},{"date":"2016-03","rate":0.36,"inflation":0.892,"real_rate":-0.532},{"date":"2016-04","rate":0.37,"inflation":1.173,"real_rate":-0.803},{"date":"2016-05","rate":0.37,"inflation":1.078,"real_rate":-0.708},{"date":"2016-06","rate":0.38,"inflation":1.079,"real_rate":-0.699},{"date":"2016-07","rate":0.39,"inflation":0.868,"real_rate":-0.478},{"date":"2016-08","rate":0.4,"inflation":1.055,"real_rate":-0.655},{"date":"2016-09","rate":0.4,"inflation":1.549,"real_rate":-1.149},{"date":"2016-10","rate":0.4,"inflation":1.686,"real_rate":-1.286},{"date":"2016-11","rate":0.41,"inflation":1.684,"real_rate":-1.274},{"date":"2016-12","rate":0.54,"inflation":2.051,"real_rate":-1.511},{"date":"2017-01","rate":0.65,"inflation":2.51,"real_rate":-1.86},{"date":"2017-02","rate":0.66,"inflation":2.81,"real_rate":-2.15},{"date":"2017-03","rate":0.79,"inflation":2.441,"real_rate":-1.651},{"date":"2017-04","rate":0.9,"inflation":2.176,"real_rate":-1.276},{"date":"2017-05","rate":0.91,"inflation":1.856,"real_rate":-0.946},{"date":"2017-06","rate":1.04,"inflation":1.641,"real_rate":-0.601},{"date":"2017-07","rate":1.15,"inflation":1.725,"real_rate":-0.575},{"date":"2017-08","rate":1.16,"inflation":1.928,"real_rate":-0.768},{"date":"2017-09","rate":1.15,"inflation":2.181,"real_rate":-1.031},{"date":"2017-10","rate":1.15,"inflation":2.021,"real_rate":-0.871},{"date":"2017-11","rate":1.16,"inflation":2.172,"real_rate":-1.012},{"date":"2017-12","rate":1.3,"inflation":2.13,"real_rate":-0.83},{"date":"2018-01","rate":1.41,"inflation":2.151,"real_rate":-0.741},{"date":"2018-02","rate":1.42,"inflation":2.263,"real_rate":-0.843},{"date":"2018-03","rate":1.51,"inflation":2.331,"real_rate":-0.821},{"date":"2018-04","rate":1.69,"inflation":2.471,"real_rate":-0.781},{"date":"2018-05","rate":1.7,"inflation":2.782,"real_rate":-1.082},{"date":"2018-06","rate":1.82,"inflation":2.808,"real_rate":-0.988},{"date":"2018-07","rate":1.91,"inflation":2.854,"real_rate":-0.944},{"date":"2018-08","rate":1.91,"inflation":2.643,"real_rate":-0.733},{"date":"2018-09","rate":1.95,"inflation":2.332,"real_rate":-0.382},{"date":"2018-10","rate":2.19,"inflation":2.492,"real_rate":-0.302},{"date":"2018-11","rate":2.2,"inflation":2.147,"real_rate":0.053},{"date":"2018-12","rate":2.27,"inflation":2.002,"real_rate":0.268},{"date":"2019-01","rate":2.4,"inflation":1.488,"real_rate":0.912},{"date":"2019-02","rate":2.4,"inflation":1.519,"real_rate":0.881},{"date":"2019-03","rate":2.41,"inflation":1.883,"real_rate":0.527},{"date":"2019-04","rate":2.42,"inflation":2.001,"real_rate":0.419},{"date":"2019-05","rate":2.39,"inflation":1.796,"real_rate":0.594},{"date":"2019-06","rate":2.38,"inflation":1.671,"real_rate":0.709},{"date":"2019-07","rate":2.4,"inflation":1.826,"real_rate":0.574},{"date":"2019-08","rate":2.13,"inflation":1.738,"real_rate":0.392},{"date":"2019-09","rate":2.04,"inflation":1.684,"real_rate":0.356},{"date":"2019-10","rate":1.83,"inflation":1.734,"real_rate":0.096},{"date":"2019-11","rate":1.55,"inflation":2.092,"real_rate":-0.542},{"date":"2019-12","rate":1.55,"inflation":2.32,"real_rate":-0.77},{"date":"2020-01","rate":1.55,"inflation":2.6,"real_rate":-1.05},{"date":"2020-02","rate":1.58,"inflation":2.341,"real_rate":-0.761},{"date":"2020-03","rate":0.65,"inflation":1.494,"real_rate":-0.844},{"date":"2020-04","rate":0.05,"inflation":0.313,"real_rate":-0.263},{"date":"2020-05","rate":0.05,"inflation":0.198,"real_rate":-0.148},{"date":"2020-06","rate":0.08,"inflation":0.717,"real_rate":-0.637},{"date":"2020-07","rate":0.09,"inflation":0.997,"real_rate":-0.907},{"date":"2020-08","rate":0.1,"inflation":1.281,"real_rate":-1.181},{"date":"2020-09","rate":0.09,"inflation":1.391,"real_rate":-1.301},{"date":"2020-10","rate":0.09,"inflation":1.23,"real_rate":-1.14},{"date":"2020-11","rate":0.09,"inflation":1.176,"real_rate":-1.086},{"date":"2020-12","rate":0.09,"inflation":1.32,"real_rate":-1.23},{"date":"2021-01","rate":0.09,"inflation":1.374,"real_rate":-1.284},{"date":"2021-02","rate":0.08,"inflation":1.67,"real_rate":-1.59},{"date":"2021-03","rate":0.07,"inflation":2.668,"real_rate":-2.598},{"date":"2021-04","rate":0.07,"inflation":4.133,"real_rate":-4.063},{"date":"2021-05","rate":0.06,"inflation":4.918,"real_rate":-4.858},{"date":"2021-06","rate":0.08,"inflation":5.296,"real_rate":-5.216},{"date":"2021-07","rate":0.1,"inflation":5.245,"real_rate":-5.145},{"date":"2021-08","rate":0.09,"inflation":5.152,"real_rate":-5.062},{"date":"2021-09","rate":0.08,"inflation":5.351,"real_rate":-5.271},{"date":"2021-10","rate":0.08,"inflation":6.235,"real_rate":-6.155},{"date":"2021-11","rate":0.08,"inflation":6.902,"real_rate":-6.822},{"date":"2021-12","rate":0.08,"inflation":7.174,"real_rate":-7.094},{"date":"2022-01","rate":0.08,"inflation":7.559,"real_rate":-7.479},{"date":"2022-02","rate":0.08,"inflation":7.937,"real_rate":-7.857},{"date":"2022-03","rate":0.2,"inflation":8.572,"real_rate":-8.372},{"date":"2022-04","rate":0.33,"inflation":8.232,"real_rate":-7.902},{"date":"2022-05","rate":0.77,"inflation":8.538,"real_rate":-7.768},{"date":"2022-06","rate":1.21,"inflation":8.979,"real_rate":-7.769},{"date":"2022-07","rate":1.68,"inflation":8.463,"real_rate":-6.783},{"date":"2022-08","rate":2.33,"inflation":8.223,"real_rate":-5.893},{"date":"2022-09","rate":2.56,"inflation":8.192,"real_rate":-5.632},{"date":"2022-10","rate":3.08,"inflation":7.759,"real_rate":-4.679},{"date":"2022-11","rate":3.78,"inflation":7.123,"real_rate":-3.343},{"date":"2022-12","rate":4.1,"inflation":6.405,"real_rate":-2.305},{"date":"2023-01","rate":4.33,"inflation":6.327,"real_rate":-1.997},{"date":"2023-02","rate":4.57,"inflation":5.958,"real_rate":-1.388},{"date":"2023-03","rate":4.65,"inflation":4.918,"real_rate":-0.268},{"date":"2023-04","rate":4.83,"inflation":4.95,"real_rate":-0.12},{"date":"2023-05","rate":5.06,"inflation":4.132,"real_rate":0.928},{"date":"2023-06","rate":5.08,"inflation":3.071,"real_rate":2.009},{"date":"2023-07","rate":5.12,"inflation":3.288,"real_rate":1.832},{"date":"2023-08","rate":5.33,"inflation":3.723,"real_rate":1.607},{"date":"2023-09","rate":5.33,"inflation":3.687,"real_rate":1.643},{"date":"2023-10","rate":5.33,"inflation":3.251,"real_rate":2.079},{"date":"2023-11","rate":5.33,"inflation":3.133,"real_rate":2.197},{"date":"2023-12","rate":5.33,"inflation":3.316,"real_rate":2.014},{"date":"2024-01","rate":5.33,"inflation":3.088,"real_rate":2.242},{"date":"2024-02","rate":5.33,"inflation":3.157,"real_rate":2.173},{"date":"2024-03","rate":5.33,"inflation":3.487,"real_rate":1.843},{"date":"2024-04","rate":5.33,"inflation":3.361,"real_rate":1.969},{"date":"2024-05","rate":5.33,"inflation":3.244,"real_rate":2.086},{"date":"2024-06","rate":5.33,"inflation":2.97,"real_rate":2.36},{"date":"2024-07","rate":5.33,"inflation":2.941,"real_rate":2.389},{"date":"2024-08","rate":5.33,"inflation":2.607,"real_rate":2.723},{"date":"2024-09","rate":5.13,"inflation":2.426,"real_rate":2.704},{"date":"2024-10","rate":4.83,"inflation":2.579,"real_rate":2.251},{"date":"2024-11","rate":4.64,"inflation":2.719,"real_rate":1.921},{"date":"2024-12","rate":4.48,"inflation":2.871,"real_rate":1.609},{"date":"2025-01","rate":4.33,"inflation":2.991,"real_rate":1.339},{"date":"2025-02","rate":4.33,"inflation":2.802,"real_rate":1.528},{"date":"2025-03","rate":4.33,"inflation":2.382,"real_rate":1.948},{"date":"2025-04","rate":4.33,"inflation":2.325,"real_rate":2.005},{"date":"2025-05","rate":4.33,"inflation":2.377,"real_rate":1.953},{"date":"2025-06","rate":4.33,"inflation":2.68,"real_rate":1.65},{"date":"2025-07","rate":4.33,"inflation":2.743,"real_rate":1.587},{"date":"2025-08","rate":4.33,"inflation":2.939,"real_rate":1.391},{"date":"2025-09","rate":4.22,"inflation":3.023,"real_rate":1.197},{"date":"2025-11","rate":3.88,"inflation":2.696,"real_rate":1.184},{"date":"2025-12","rate":3.72,"inflation":2.653,"real_rate":1.067},{"date":"2026-01","rate":3.64,"inflation":2.391,"real_rate":1.249}];
 
-const LABELS = DATES.map(d => d.slice(0,7));
+const labels  = RAW.map(d => d.date);
+const rates   = RAW.map(d => d.rate);
+const inflats = RAW.map(d => d.inflation);
+const reals   = RAW.map(d => d.real_rate);
 
-// ── helpers ──
-function idx(dateStr) { return DATES.findIndex(d => d.startsWith(dateStr)); }
+const GRID  = { color: 'rgba(255,255,255,0.05)' };
+const FONT  = { color: '#8892a4', size: 11 };
+const base  = { responsive: true, maintainAspectRatio: false };
 
-// ── shade plugin helper ──
-function band(x1, x2, color, label) {
-  return {
-    type:'box', xMin: idx(x1), xMax: idx(x2),
-    backgroundColor: color, borderWidth: 0,
-    label: { content: label, display: true, position:'start',
-             color:'#94a3b8', font:{size:9}, yAdjust:-8 }
-  };
-}
-
-// ── Chart 1: Time Series ──
-new Chart(document.getElementById('timeSeriesChart'), {
+// ── Chart 1: Main overlay ──────────────────────────────────────────
+new Chart(document.getElementById('chartMain'), {
+  type: 'line',
   data: {
-    labels: LABELS,
+    labels,
     datasets: [
-      { type:'line', label:'Fed Funds Rate (%)', data: FED, yAxisID:'y1',
-        borderColor:'#3b82f6', backgroundColor:'transparent',
-        borderWidth:2, pointRadius:0, tension:0.3 },
-      { type:'line', label:'YoY Inflation (%)', data: INF, yAxisID:'y2',
-        borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.07)',
-        fill:true, borderWidth:2, pointRadius:0, tension:0.3 }
+      {
+        label: 'Fed Funds Rate (%)',
+        data: rates,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.08)',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.3,
+        fill: true,
+        yAxisID: 'y',
+      },
+      {
+        label: 'Inflation YoY (%)',
+        data: inflats,
+        borderColor: '#ef4444',
+        backgroundColor: 'rgba(239,68,68,0.06)',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.3,
+        fill: true,
+        yAxisID: 'y',
+      }
     ]
   },
   options: {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{ mode:'index', intersect:false },
-    plugins:{
-      legend:{ labels:{ color:'#94a3b8', boxWidth:12 }},
-      annotation:{ annotations:{
-        zirp:  band('2009-01','2015-12','rgba(96,165,250,0.07)','ZIRP Era'),
-        hike22:band('2022-03','2023-12','rgba(239,68,68,0.08)','2022-23 Hikes'),
-        covid: band('2020-03','2022-02','rgba(251,191,36,0.07)','COVID cuts'),
-      }}
+    ...base,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: '#e2e8f0', boxWidth: 14 } },
+      tooltip: { backgroundColor: '#1a1d27', borderColor: '#2a2d3a', borderWidth: 1, titleColor: '#e2e8f0', bodyColor: '#8892a4' }
     },
-    scales:{
-      x:{ ticks:{ color:'#6b7280', maxTicksLimit:10, maxRotation:0 }, grid:{ color:'#1f2937' }},
-      y1:{ position:'left',  ticks:{ color:'#3b82f6' }, grid:{ color:'#1f2937' },
-           title:{ display:true, text:'Fed Rate (%)', color:'#3b82f6', font:{size:11} }},
-      y2:{ position:'right', ticks:{ color:'#ef4444' }, grid:{ drawOnChartArea:false },
-           title:{ display:true, text:'Inflation (%)', color:'#ef4444', font:{size:11} }}
+    scales: {
+      x: { ticks: { ...FONT, maxTicksLimit: 12 }, grid: GRID },
+      y: { ticks: { ...FONT, callback: v => v + '%' }, grid: GRID }
     }
   }
 });
 
-// ── Chart 2: Scatter (lagged 12m) ──
-const LAG = 12;
-const scatterData = [];
-for (let i = LAG; i < FED.length; i++) {
-  if (FED[i-LAG] != null && INF[i] != null)
-    scatterData.push({ x: FED[i-LAG], y: INF[i] });
-}
-// OLS
-const xs = scatterData.map(p=>p.x), ys = scatterData.map(p=>p.y);
-const n = xs.length, mx = xs.reduce((a,b)=>a+b)/n, my = ys.reduce((a,b)=>a+b)/n;
-const slope = xs.map((x,i)=>(x-mx)*(ys[i]-my)).reduce((a,b)=>a+b) /
-              xs.map(x=>(x-mx)**2).reduce((a,b)=>a+b);
-const intc  = my - slope*mx;
-const xMin = Math.min(...xs), xMax = Math.max(...xs);
-const olsLine = [{ x:xMin, y:slope*xMin+intc }, { x:xMax, y:slope*xMax+intc }];
-
-new Chart(document.getElementById('scatterChart'), {
-  data:{
-    datasets:[
-      { type:'scatter', label:'Month (lagged)', data:scatterData,
-        backgroundColor:'rgba(74,222,128,0.25)', pointRadius:3,
-        pointHoverRadius:5, borderColor:'rgba(74,222,128,0.5)', borderWidth:1 },
-      { type:'line', label:'OLS regression', data:olsLine,
-        borderColor:'#f59e0b', borderWidth:2, pointRadius:0, fill:false }
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{ legend:{ labels:{ color:'#94a3b8', boxWidth:12 }}},
-    scales:{
-      x:{ title:{ display:true, text:'Fed Rate 12m ago (%)', color:'#94a3b8', font:{size:11}},
-          ticks:{ color:'#6b7280' }, grid:{ color:'#1f2937' }},
-      y:{ title:{ display:true, text:'YoY Inflation (%)', color:'#94a3b8', font:{size:11}},
-          ticks:{ color:'#6b7280' }, grid:{ color:'#1f2937' }}
-    }
-  }
-});
-
-// ── Chart 3: Cycle bars ──
-new Chart(document.getElementById('cycleChart'), {
-  type:'bar',
-  data:{
-    labels:['Hike months\n(n=29)','Cut months\n(n=26)','Hold months\n(n=172)'],
-    datasets:[{
-      label:'Avg YoY Inflation (%)',
-      data:[4.60, 2.83, 2.12],
-      backgroundColor:['rgba(239,68,68,0.7)','rgba(96,165,250,0.7)','rgba(148,163,184,0.5)'],
-      borderColor:['#ef4444','#3b82f6','#64748b'],
-      borderWidth:1, borderRadius:6
+// ── Chart 2: Real rate with zero line ─────────────────────────────
+new Chart(document.getElementById('chartReal'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Real Interest Rate (%)',
+      data: reals,
+      borderColor: '#22c55e',
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3,
+      fill: {
+        target: { value: 0 },
+        above: 'rgba(34,197,94,0.15)',
+        below: 'rgba(239,68,68,0.15)'
+      }
     }]
   },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{ display:false },
-      tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.y.toFixed(2)}%` }}
+  options: {
+    ...base,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: '#e2e8f0', boxWidth: 14 } },
+      tooltip: { backgroundColor: '#1a1d27', borderColor: '#2a2d3a', borderWidth: 1, titleColor: '#e2e8f0', bodyColor: '#8892a4' },
+      annotation: {}
     },
-    scales:{
-      x:{ ticks:{ color:'#94a3b8' }, grid:{ color:'#1f2937' }},
-      y:{ ticks:{ color:'#6b7280', callback: v => v+'%' }, grid:{ color:'#1f2937' },
-          title:{ display:true, text:'Avg Inflation (%)', color:'#94a3b8', font:{size:11}}}
+    scales: {
+      x: { ticks: { ...FONT, maxTicksLimit: 12 }, grid: GRID },
+      y: { ticks: { ...FONT, callback: v => v + '%' }, grid: GRID }
+    }
+  }
+});
+
+// ── Chart 3: Scatter ───────────────────────────────────────────────
+// Colour by era
+function eraColor(date) {
+  const y = parseInt(date.slice(0,4));
+  if (y < 2009) return 'rgba(59,130,246,0.7)';
+  if (y < 2016) return 'rgba(239,68,68,0.6)';
+  if (y < 2020) return 'rgba(245,158,11,0.7)';
+  if (y < 2022) return 'rgba(239,68,68,0.6)';
+  if (y < 2024) return 'rgba(168,85,247,0.7)';
+  return 'rgba(34,197,94,0.7)';
+}
+
+new Chart(document.getElementById('chartScatter'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Rate vs Inflation',
+      data: RAW.map(d => ({ x: d.rate, y: d.inflation })),
+      backgroundColor: RAW.map(d => eraColor(d.date)),
+      pointRadius: 4,
+      pointHoverRadius: 6,
+    }]
+  },
+  options: {
+    ...base,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1a1d27', borderColor: '#2a2d3a', borderWidth: 1,
+        callbacks: {
+          label: ctx => {
+            const d = RAW[ctx.dataIndex];
+            return `${d.date}: Rate ${d.rate}%, CPI ${d.inflation}%`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Fed Funds Rate (%)', color: '#8892a4' }, ticks: FONT, grid: GRID },
+      y: { title: { display: true, text: 'Inflation YoY (%)', color: '#8892a4' }, ticks: FONT, grid: GRID }
+    }
+  }
+});
+
+// ── Chart 4: Lag correlation bar ──────────────────────────────────
+function pearson(xs, ys) {
+  const n = xs.length, mx = xs.reduce((a,b)=>a+b,0)/n, my = ys.reduce((a,b)=>a+b,0)/n;
+  const num = xs.reduce((s,x,i)=>s+(x-mx)*(ys[i]-my),0);
+  const den = Math.sqrt(xs.reduce((s,x)=>s+(x-mx)**2,0)*ys.reduce((s,y)=>s+(y-my)**2,0));
+  return den ? num/den : 0;
+}
+
+const lagLabels = [], lagVals = [];
+for (let lag = 0; lag <= 24; lag++) {
+  const xs = rates.slice(0, rates.length - lag);
+  const ys = inflats.slice(lag);
+  lagLabels.push(lag);
+  lagVals.push(+pearson(xs, ys).toFixed(4));
+}
+
+new Chart(document.getElementById('chartLag'), {
+  type: 'bar',
+  data: {
+    labels: lagLabels,
+    datasets: [{
+      label: 'Pearson r',
+      data: lagVals,
+      backgroundColor: lagVals.map(v => v >= 0 ? 'rgba(59,130,246,0.7)' : 'rgba(239,68,68,0.7)'),
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    ...base,
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#1a1d27', borderColor: '#2a2d3a', borderWidth: 1, titleColor: '#e2e8f0', bodyColor: '#8892a4',
+        callbacks: { title: ctx => `Lag: ${ctx[0].label} months`, label: ctx => `r = ${ctx.parsed.y}` }
+      }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Lag (months)', color: '#8892a4' }, ticks: FONT, grid: GRID },
+      y: { title: { display: true, text: 'Correlation (r)', color: '#8892a4' }, ticks: FONT, grid: GRID }
     }
   }
 });
