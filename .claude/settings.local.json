@@ -37,7 +37,10 @@
       "mcp__github__list_issues",
       "Bash(chmod +x:*)",
       "Bash(where:*)",
-      "mcp__github__get_issue"
+      "mcp__github__get_issue",
+      "mcp__github__create_pull_request_review",
+      "Bash(ls:*)",
+      "Bash(pip install:*)"
     ]
   },
   "hooks": {
